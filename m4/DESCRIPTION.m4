@@ -11,8 +11,9 @@ Date: DATE()
 License: LGPL-3
 Title: PDQ Functions via Gram Charlier and Cornish Fisher Approximations
 BugReports: https://github.com/shabbychef/PKG_NAME()/issues
-Description: A collection of tools for approximating the density, distribution, and quantile of 
-    probability distributions via classical expansions involving moments and cumulants.
+Description: A collection of tools for approximating the 'PDQ' functions (respectively, the 
+    cumulative distribution, density, and quantile) of probability distributions via classical 
+    expansions involving moments and cumulants.
 Depends: 
     R (>= 3.0.2)
 Imports:
