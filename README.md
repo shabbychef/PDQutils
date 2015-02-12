@@ -2,7 +2,7 @@
 
 # PDQutils
 
-Approximating Probability Distributions.
+PDQ Functions via Gram Charlier and Cornish Fisher Approximations
 
 -- Steven E. Pav, shabbychef@gmail.com
 
