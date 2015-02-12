@@ -33,7 +33,7 @@ opts_chunk$set(tidy=TRUE,tidy.opts=list(width.cutoff=50,keep.blank.line=TRUE))
 
 # PDQutils
 
-Approximating Probability Distributions.
+PDQ Functions via Gram Charlier and Cornish Fisher Approximations
 
 -- Steven E. Pav, shabbychef@gmail.com
 
