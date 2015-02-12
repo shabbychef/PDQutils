@@ -1,11 +1,34 @@
-# History files
-.Rhistory
+# for testing, ignore these
 
-# Example code in package build process
-*-Ex.R
+# dev stuff
+.tags
+.R_tags
+.*.swp
+.*.swo
 
-# R data files from past sessions
-.Rdata
+# local build check and whatnot
+*.tar.gz
+.local/
+.staging/
+*.Rcheck
 
-# RStudio files
-.Rproj.user/
+# unit testing
+unit_test.log
+
+# build static/dynamic
+convoluted_build.sh
+
+# automagically generated?
+# ah, but these are needed for install_github:
+#NAMESPACE
+#DESCRIPTION
+#man/
+
+# generated as part of the 'local' vignette build
+SKELETON.tex
+SKELETON.log
+./SKELETON.pdf
+*.aux
+*.bbl
+*.blg
+cache/
