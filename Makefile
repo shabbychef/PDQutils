@@ -540,6 +540,7 @@ mactex :
 
 suggestions : 
 	@-echo 'make docs'
+	@-echo 'at 23:`jot -r 1 10 55`'
 	@-echo 'sleep `jot -r 1 2 57` && git commit -a -m "working on package"'
 	@-echo "git push origin $(GIT_BRANCH)"
 

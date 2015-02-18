@@ -4,7 +4,7 @@
 \alias{qapx_cf}
 \title{Approximate quantile via Cornish-Fisher expansion.}
 \usage{
-qapx_cf(p, raw.cumulants, lower.tail = TRUE, log.p = FALSE)
+qapx_cf(p, raw.cumulants, support=c(-Inf,Inf), lower.tail = TRUE, log.p = FALSE)
 }
 \arguments{
 \item{p}{where to evaluate the approximate distribution.}
@@ -13,13 +13,16 @@ qapx_cf(p, raw.cumulants, lower.tail = TRUE, log.p = FALSE)
 value is the mean of the distribution, the second should
 be the variance of the distribution, the remainder are raw cumulants.}
 
+\item{support}{the support of the density function. It is assumed
+that the density is zero on the complement of this open interval.}
+
 \item{lower.tail}{whether to compute the lower tail. If false, we approximate the survival function.}
 
 \item{log.p}{logical; if TRUE, probabilities p are given
 as \eqn{\mbox{log}(p)}{log(p)}.}
 }
 \value{
-The approximate quantile at \code{x}.
+The approximate quantile at \code{p}.
 }
 \description{
 Approximate the quantile function of a distribution via its cumulants.
@@ -27,6 +30,9 @@ Approximate the quantile function of a distribution via its cumulants.
 \details{
 Given the cumulants of a probability distribution, we approximate the
 quantile function via a Cornish-Fisher expansion.
+}
+\note{
+Monotonicity of the quantile function is not guaranteed.
 }
 \examples{
 # normal distribution:

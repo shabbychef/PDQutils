@@ -5,15 +5,18 @@
 \alias{papx_gca}
 \title{Approximate density and distribution via Gram-Charlier A expansion.}
 \usage{
-dapx_gca(x, raw.moments, log=FALSE)
+dapx_gca(x, raw.moments, support=c(-Inf,Inf), log=FALSE)
 
-papx_gca(q, raw.moments, lower.tail=TRUE, log.p=FALSE)
+papx_gca(q, raw.moments, support=c(-Inf,Inf), lower.tail=TRUE, log.p=FALSE)
 }
 \arguments{
 \item{x}{where to evaluate the approximate density.}
 
 \item{raw.moments}{an atomic array of the 1st through kth raw moments
 of the probability distribution.}
+
+\item{support}{the support of the density function. It is assumed
+that the density is zero on the complement of this open interval.}
 
 \item{log}{logical; if TRUE, densities \eqn{f} are given
 as \eqn{\mbox{log}(f)}{log(f)}.}
@@ -65,6 +68,9 @@ moments of the probability distribution under consideration. Note that it may be
 case that the computation of these coefficients suffers from bad numerical
 cancellation for some distributions, and that an alternative formulation
 may be more numerically robust.
+}
+\note{
+Monotonicity of the CDF is not guaranteed.
 }
 \examples{
 # normal distribution:

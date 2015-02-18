@@ -4,7 +4,7 @@
 \alias{rapx_cf}
 \title{Approximate random generation via Cornish-Fisher expansion.}
 \usage{
-rapx_cf(n, raw.cumulants)
+rapx_cf(n, raw.cumulants, support=c(-Inf,Inf))
 }
 \arguments{
 \item{n}{number of observations. If 'length(n) > 1', the length is
@@ -13,6 +13,9 @@ taken to be the number required.}
 \item{raw.cumulants}{an atomic array of the 1st through kth raw cumulants. The first
 value is the mean of the distribution, the second should
 be the variance of the distribution, the remainder are raw cumulants.}
+
+\item{support}{the support of the density function. It is assumed
+that the density is zero on the complement of this open interval.}
 }
 \value{
 A vector of approximate draws.

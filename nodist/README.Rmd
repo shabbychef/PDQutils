@@ -115,17 +115,17 @@ library(PDQutils)
 
 dsnak <- function(x,dfs,ord.max=10,...) {
 	raw.moment <- cumulant2moment(snak_cumulants(dfs,ord.max))
-	retval <- dapx_gca(x,raw.moment,...)
+	retval <- dapx_gca(x,raw.moment,support=c(0,Inf),...)
 	return(retval)
 }
 psnak <- function(q,dfs,ord.max=10,...) {
 	raw.moment <- cumulant2moment(snak_cumulants(dfs,ord.max))
-	retval <- papx_gca(q,raw.moment,...)
+	retval <- papx_gca(q,raw.moment,support=c(0,Inf),...)
 	return(retval)
 }
 qsnak <- function(p,dfs,ord.max=10,...) {
 	raw.cumul <- snak_cumulants(dfs,ord.max)
-	retval <- qapx_cf(p,raw.cumul,...)
+	retval <- qapx_cf(p,raw.cumul,support=c(0,Inf),...)
 	return(retval)
 }
 ```
