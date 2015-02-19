@@ -20,6 +20,8 @@ Imports:
     orthopolynom,
     moments
 Suggests: 
+		ggplot2,
+		reshape2,
     testthat, 
     knitr
 URL: https://github.com/shabbychef/PKG_NAME()
