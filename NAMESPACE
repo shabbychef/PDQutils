@@ -2,8 +2,10 @@
 
 export(AS269)
 export(cumulant2moment)
+export(dapx_edgeworth)
 export(dapx_gca)
 export(moment2cumulant)
+export(papx_edgeworth)
 export(papx_gca)
 export(qapx_cf)
 export(rapx_cf)
