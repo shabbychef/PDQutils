@@ -137,6 +137,8 @@ papx_gca <- function(q,raw.moments,support=c(-Inf,Inf),lower.tail=TRUE,log.p=FAL
 	phi.eta <- dnorm(eta)
 	for (iii in c(1:order.max)) {
 		ci <- (sum(coef(hermi[[iii+1]]) * mu.std[1:(iii+1)])) / factorial(iii)
+		# n.b. the minus here!
+		# and we are using He_{j-1} instead of He_j as in dapx_gca
 		retval <- retval - ci * phi.eta * as.function(hermi[[iii]])(eta)
 	}
 	# sanity check; shall I throw a warning?
@@ -408,47 +410,50 @@ rapx_cf <- function(n,raw.cumulants, support=c(-Inf,Inf)) {#FOLDUP
 	return(retval)
 }#UNFOLD
 
-# blinnikov and moessner
-# current <- c(3,0,0)
-# mold <- 1
-advance <- function(current,mold) {
+# blinnikov and moessner's ADVANCE function
+#current <- c(3,0,0)
+#mold <- 1
+#foo <- list(current=current,mold=mold)
+#foo <- advance(foo)
+#foo <- advance(foo)
+
+#foo <- list(current=c(8,rep(0,7)),mold=1)
+#while (foo$mold <= 8) {
+	#print(foo$current)
+	#foo <- advance(foo)
+#}
+advance <- function(kms) {
+	current <- kms$current
+	mold <- kms$mold
+
 	n <- length(current)
 	ords <- 1:(length(current))
 	stopifnot(n == sum(current * ords))
 	sumcur <- n
 	m <- 1
-	DONE <- FALSE
-	while (!DONE) {
+	is.done <- FALSE
+	while (!is.done) {
 		sumcur <- sumcur - current[m]*m + (m+1)
 		current[m] <- 0
 		current[m+1] <- current[m+1] + 1
 		m <- m+1
-		DONE <- (sumcur <= n) || (m > mold)
+		is.done <- (sumcur <= n) || (m > mold)
 	}
 	mold <- max(mold,m)
 	current[1] <- n - sumcur
 	retv <- list(current=current,mold=mold)
 	return(retv)
 }
-#current <- c(3,0,0)
-#mold <- 1
-#foo <- advance(current,mold)
-#foo <- advance(foo$current,foo$mold)
 
-#foo <- list(current=c(8,rep(0,7)),mold=1)
-#while (foo$mold <= 8) {
-	#print(foo$current)
-	#foo <- advance(foo$current,foo$mold)
-#}
-
-# blinnikov and moessner eqn 43
+#' @export
+#' blinnikov and moessner eqn 43
 dapx_edg <- function(x,raw.cumulants,support=c(-Inf,Inf),log=FALSE) {
 	order.max <- length(raw.cumulants)
 
 	mu <- raw.cumulants[1]
 	sigma <- sqrt(raw.cumulants[2])
 
-	eta <- (q - mu) / sigma
+	eta <- (x - mu) / sigma
 
 	phi.eta <- dnorm(eta)
 	retval <- phi.eta
@@ -465,7 +470,7 @@ dapx_edg <- function(x,raw.cumulants,support=c(-Inf,Inf),log=FALSE) {
 				coefs <- ((Sn[1:s] / factorial(3:(s+2))) ^ kms$current) / factorial(kms$current)
 				coef <- prod(coefs)
 				nexterm <- nexterm + coef * as.function(hermi[[s+2*r+1]])(eta)
-				kms <- advance(kms$current,kms$mold)
+				kms <- advance(kms)
 			}
 			retval <- retval + phi.eta * (sigma^s) * nexterm
 		}
@@ -490,15 +495,8 @@ dapx_edg <- function(x,raw.cumulants,support=c(-Inf,Inf),log=FALSE) {
 		retval <- log(retval)
 	return(retval)
 }
-
-#x <- seq(-2,2,length.out=1001)
-#dv <- dapx_edg(x,raw.cumulants=c(0,1,0,0,0,0,1))
-#plot(x,dv)
-#lines(x,dnorm(x),col='red')
-##plot(x,dnorm(x) - dv)
-
-# implicitly, blinnikov and moessner eqn 43
-papx_edg <- function(q,raw.cumulants,support=c(-Inf,Inf),lower.tail=TRUE,log.p=FALSE) {
+#' @export
+papx_edg <- function(q,raw.cumulants,support=c(-Inf,Inf),lower.tail=TRUE,log.p=FALSE) {#FOLDUP
 	order.max <- length(raw.cumulants)
 
 	# 2FIX: would it not be better to pass lower.tail to pnorm and dnorm below?
@@ -515,8 +513,7 @@ papx_edg <- function(q,raw.cumulants,support=c(-Inf,Inf),lower.tail=TRUE,log.p=F
 	eta <- (q - mu) / sigma
 
 	phi.eta <- dnorm(eta)
-	Phi.eta <- pnorm(eta)
-	retval <- Phi.eta
+	retval <- pnorm(eta)
 
 	if (order.max > 2) {
 		hermi <- orthopolynom::hermite.he.polynomials(3*order.max+2, normalized=FALSE)
@@ -529,10 +526,12 @@ papx_edg <- function(q,raw.cumulants,support=c(-Inf,Inf),lower.tail=TRUE,log.p=F
 				r <- sum(kms$current)
 				coefs <- ((Sn[1:s] / factorial(3:(s+2))) ^ kms$current) / factorial(kms$current)
 				coef <- prod(coefs)
-				nexterm <- nexterm + coef * as.function(hermi[[s+2*r]])(eta)
-				kms <- advance(kms$current,kms$mold)
+				# n.b. the hermite polynomial is one order less than in the dapx
+				# and we _subtract_ it
+				nexterm <- nexterm - coef * as.function(hermi[[s+2*r]])(eta)
+				kms <- advance(kms)
 			}
-			retval <- retval - phi.eta * (sigma^s) * nexterm
+			retval <- retval + phi.eta * (sigma^s) * nexterm
 		}
 	}
 
@@ -551,13 +550,14 @@ papx_edg <- function(q,raw.cumulants,support=c(-Inf,Inf),lower.tail=TRUE,log.p=F
 	if (log.p)
 		retval <- log(retval)
 	return(retval)
-}
+}#UNFOLD
 
-#q <- seq(-2,2,length.out=1001)
-#pv <- papx_edg(q,raw.cumulants=c(0,1,0,1,1,1))
-#plot(q,pv)
-#lines(q,pnorm(q),col='red')
-##plot(x,dnorm(x) - dv)
+## test nakagami#FOLDUP
+##q <- seq(-2,2,length.out=1001)
+##pv <- papx_edg(q,raw.cumulants=c(0,1,0,1,1,1))
+##plot(q,pv)
+##lines(q,pnorm(q),col='red')
+###plot(x,dnorm(x) - dv)
 
 ## compute the first ord.max raw moments of the Nakagami distribution
 #nak_moments <- function(m,omega=1,ord.max=10) {
@@ -573,28 +573,184 @@ papx_edg <- function(q,raw.cumulants,support=c(-Inf,Inf),lower.tail=TRUE,log.p=F
 #}
 
 
-#rac <- nak_cumulants(m=30,omega=150,ord.max=20)
-#mom <- nak_moments(m=30,omega=150,ord.max=length(rac))
+## perhaps the computation of cumulants has
+## numerical issues?
+#mom <- nak_moments(m=30,omega=150,ord.max=20)
+#rac <- moment2cumulant(mom)
 
-##q <- seq(0,20,length.out=1001)
-##pv <- papx_edg(q,raw.cumulants=rac,support=c(0,Inf))
-##plot(q,pv)
-##pv2 <- papx_gca(q,mom,support=c(0,Inf))
-##lines(q,pv2,col='red')
+#momc <- moments::raw2central(c(1,mom))
+#momc <- momc[2:length(momc)]
+#racc <- moment2cumulant(momc)
+#racc[1] <- mom[1]
 
-#dv <- dapx_edg(q,raw.cumulants=rac,support=c(0,Inf))
-#plot(q,dv)
-#dv2 <- dapx_gca(q,mom,support=c(0,Inf))
-#lines(q,dv2,col='red')
 
-## symmetry trick ...
-## does not help...
-#mom2 <- rac
-#mom2[seq(1,length(mom2),by=2)] <- 0
-#rac2 <- moment2cumulant(mom2)
-#dv3 <- 0.5 * dapx_edg(q,raw.cumulants=rac2,support=c(9,Inf))
-#lines(q,dv3,col='blue')
+#q <- seq(0,20,length.out=1001)
+#pv <- papx_edg(q,raw.cumulants=racc,support=c(0,Inf))
+#plot(q,pv)
+#pv2 <- papx_gca(q,mom,support=c(0,Inf))
+#lines(q,pv2,col='red')
 
+##dv <- dapx_edg(q,raw.cumulants=rac,support=c(0,Inf))
+##plot(q,dv)
+##dv2 <- dapx_gca(q,mom,support=c(0,Inf))
+##lines(q,dv2,col='red')
+
+### symmetry trick ...
+### does not help...
+##mom2 <- rac
+##mom2[seq(1,length(mom2),by=2)] <- 0
+##rac2 <- moment2cumulant(mom2)
+##dv3 <- 0.5 * dapx_edg(q,raw.cumulants=rac2,support=c(9,Inf))
+##lines(q,dv3,col='blue')
+##UNFOLD
+
+## checking#FOLDUP
+## the problem does _not_ seem to be numerical issues
+## in converting moments to cumulants.
+#lambda <- 0.7
+#max.ord <- 15
+#ords <- 1:max.ord
+#moms <- exp(lfactorial(ords) - ords * log(lambda))
+## roundoff issues?
+#rac1 <- moment2cumulant(moms)
+## the 'exact'
+#rac <- exp(lfactorial(ords-1) - ords * log(lambda))
+#err <- rac1 - rac
+#rerr <- err / rac
+##' cumul <- (rate ^ -(1:n)) * factorial(0:(n-1))
+
+#q <- seq(0,20,length.out=1001)
+#truv <- pexp(q,rate=lambda)
+#plot(q,truv)
+#pv <- papx_edg(q,raw.cumulants=rac,support=c(0,Inf))
+#lines(q,pv,col='blue')
+#pv1 <- papx_edg(q,raw.cumulants=rac1,support=c(0,Inf))
+#lines(q,pv1,col='green')
+#pv2 <- papx_gca(q,moms,support=c(0,Inf))
+#lines(q,pv2,col='red')
+
+#plot(q,pv-pv1)
+##UNFOLD
+
+## checking#FOLDUP
+## the problem does _not_ seem to be numerical issues
+## in converting moments to cumulants.
+#lambda <- 0.7
+#max.ord <- 6
+#ords <- 1:max.ord
+#moms <- exp(lfactorial(ords) - ords * log(lambda))
+#rac <- exp(lfactorial(ords-1) - ords * log(lambda))
+
+#q <- seq(0,20,length.out=1001)
+#truv <- pexp(q,rate=lambda)
+#plot(q,truv)
+#pv <- papx_edg(q,raw.cumulants=rac,support=c(0,Inf))
+#lines(q,pv,col='green')
+#pv2 <- papx_gca(q,moms,support=c(0,Inf))
+#lines(q,pv2,col='red')
+##UNFOLD
+
+## checking#FOLDUP
+## the problem does _not_ seem to be numerical issues
+## in converting moments to cumulants.
+#lambda <- 0.7
+#max.ord <- 4
+#ords <- 1:max.ord
+#moms <- exp(lfactorial(ords) - ords * log(lambda))
+#rac <- exp(lfactorial(ords-1) - ords * log(lambda))
+
+#x <- seq(0,20,length.out=1001)
+#truv <- dexp(x,rate=lambda)
+#plot(x,truv)
+#dv <- dapx_edg(x,raw.cumulants=rac,support=c(0,Inf))
+#lines(x,dv,col='green')
+#dv2 <- dapx_gca(x,moms,support=c(0,Inf))
+#lines(x,dv2,col='red')
+##UNFOLD
+
+## look at a root exponential distribution#FOLDUP
+## with density
+## lambda |y| exp(-lambda *y^2)
+## this is a density,
+## and y^2 is exponential(lambda)
+
+#lambda <- 0.7
+#max.ord <- 7
+#ords <- 1:max.ord
+#moms <- rep(0,2*max.ord)
+#moms[seq(2,length(moms),by=2)] <- exp(lfactorial(ords) - ords * log(lambda))
+#rac <- moment2cumulant(moms)
+
+#x <- seq(-4,4,length.out=1001)
+#truv <- lambda * abs(x) * exp(-lambda * x^2)
+#plot(x,truv)
+
+#dv <- dapx_edg(x,raw.cumulants=rac,support=c(-Inf,Inf))
+#lines(x,dv,col='green')
+#dv2 <- dapx_gca(x,moms,support=c(-Inf,Inf))
+#lines(x,dv2,col='red')
+
+## and CDF
+#lambda <- 0.7
+#max.ord <- 10
+#ords <- 1:max.ord
+#moms <- rep(0,2*max.ord)
+#moms[seq(2,length(moms),by=2)] <- exp(lfactorial(ords) - ords * log(lambda))
+#rac <- moment2cumulant(moms)
+
+#q <- seq(-3,3,length.out=1001)
+#truv <- rep(0,length(q))
+#truv <- 0.5 * (1 + sign(q) * pexp(q^2,rate=lambda))
+#plot(q,truv)
+
+#pv <- papx_edg(q,raw.cumulants=rac,support=c(-Inf,Inf))
+#lines(q,pv,col='green')
+#pv2 <- papx_gca(q,moms,support=c(-Inf,Inf))
+#lines(q,pv2,col='red')
+##UNFOLD
+
+## look at chisq distribution#FOLDUP
+
+## match blinnikov and moessner
+#df <- 5
+
+#lambda <- 0.7
+#max.ord <- 12 
+#ords <- 1:max.ord
+#subords <- ords - 1
+
+#rac <- df * (2^subords) * factorial(subords)
+#moms <- cumulant2moment(rac)
+
+#x <- seq(0,25,length.out=1001)
+#truv <- dchisq(x,df=df)
+
+#plotx <- (x - df) / sqrt(2*df)
+#plot(plotx,truv)
+
+#dv <- dapx_edg(x,raw.cumulants=rac,support=c(0,Inf))
+#lines(plotx,dv,col='green')
+#dv2 <- dapx_gca(x,moms,support=c(0,Inf))
+#lines(plotx,dv2,col='red')
+
+## and CDF
+#lambda <- 0.7
+#max.ord <- 10
+#ords <- 1:max.ord
+#moms <- rep(0,2*max.ord)
+#moms[seq(2,length(moms),by=2)] <- exp(lfactorial(ords) - ords * log(lambda))
+#rac <- moment2cumulant(moms)
+
+#q <- seq(-3,3,length.out=1001)
+#truv <- rep(0,length(q))
+#truv <- 0.5 * (1 + sign(q) * pexp(q^2,rate=lambda))
+#plot(q,truv)
+
+#pv <- papx_edg(q,raw.cumulants=rac,support=c(-Inf,Inf))
+#lines(q,pv,col='green')
+#pv2 <- papx_gca(q,moms,support=c(-Inf,Inf))
+#lines(q,pv2,col='red')
+##UNFOLD
 
 #for vim modeline: (do not edit)
 # vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=#%s:syn=r:ft=r
