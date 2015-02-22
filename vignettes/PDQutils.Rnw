@@ -384,6 +384,24 @@ cancellation for some distributions, and that an alternative formulation
 may be more numerically robust.
 %UNFOLD
 
+\section{Edgeworth Expansion}%FOLDUP
+
+Another approximation of the probability density and cumulative distribution
+functions is the Edgeworth Expansions. These are expressed in terms of
+the cumulants of the distribution, and also include the Hermite polynomials.
+However, the derivation of the Edgeworth expansion is rather more complicated than 
+of the Gram Charlier expansion. \cite{1998A&AS..130..193B} The Edgeworth
+series for a zero-mean unit distribution is 
+$$
+f(x) = \frac{1}{\sigma}\phi\left(\frac{x}{\sigma}\right)\left[1 + \sum_{1\le j} \sigma^s 
+\sum_{\{k_m\}} He_{s+2r}\left(x/\sigma\right) \Pi_{1 \le m \le s}
+\frac{1}{k_m!}\left(\frac{S_{m+2}}{(m+2)!}\right)^{k_m}\right],
+$$
+where the second sum is over partitions $\{k_m\}$ such that 
+$k_1 + 2k_2 + \ldots + sk_s = s$, where $r=k_1 + k_2 + \ldots + \k_s$, and
+where $S_n = \frac{\kappa_n}{\sigma^{2n-2}}$ is a semi-normalized cumulant. 
+%UNFOLD
+
 \section{Cornish Fisher Approximation}%FOLDUP
 
 The Cornish Fisher approximation is the Legendre
@@ -532,117 +550,6 @@ plot(ecdf(apx.p))
 
 %UNFOLD
 
-\section{An Example: Nakagami distribution}%FOLDUP
-
-<<'nakagamicu',eval=TRUE,echo=TRUE>>=
-library(PDQutils)
-
-# compute the first ord.max raw moments of the Nakagami distribution
-nak_moments <- function(m,omega=1,ord.max=10) {
-	ords <- 1:ord.max
-	df <- 2*m
-	moms <- 2 ^ (ords/2.0) * exp(lgamma((df+ords)/2) - lgamma(df/2))
-	moms <- moms * ((omega/df) ^ (ords/2.0))
-	return(moms)
-}
-# the density is known exactly
-dnak <- function(x,m,omega=1,log=FALSE) {
-	# actually probably better to compute log density first
-	logf <- log(2) + m * (log(m)) - lgamma(m) - m * log(omega) + (2*m-1) * log(x) - (m/omega) * x^2
-	if (log) {
-		return(logf)
-  } else {
-		retv <- exp(logf)
-		return(retv)
-	}
-}
-
-dnak_apx <- function(x,m,omega=1,ord.max=10,...) {
-	raw.moment <- nak_moments(m=m,omega=omega,ord.max=ord.max)
-	retval <- dapx_gca(x,raw.moment,support=c(0,Inf),...)
-	return(retval)
-}
-pnak_apx <- function(q,m,omega=1,ord.max=10,...) {
-	raw.moment <- nak_moments(m=m,omega=omega,ord.max=ord.max)
-	retval <- papx_gca(q,raw.moment,support=c(0,Inf),...)
-	return(retval)
-}
-
-@
-
-<<'dnak2',eval=TRUE,echo=TRUE,fig.width=4.5,fig.height=4,fig.scap=NA,fig.cap=paste0("We compare the approximate and true density of a Nakagami distribution...")>>=
-xs <- seq(5,20,length.out=1001)
-m <- 20
-omega <- 120
-ord.max <- 55
-#datdf <- data.frame(x=xs,exact=pexp(xs,rate=lambda),
-  #GramCharlier=pexp_apx(xs,lambda=lambda,ord.max=ord.max))
-datdf <- data.frame(x=xs,exact=dnak(xs,m=m,omega=omega),
-  GramCharlier=dnak_apx(xs,m=m,omega=omega,ord.max=ord.max))
-require(reshape2)
-require(ggplot2)
-altdf <- melt(datdf,id.vars=c('x'),variable.name='algorithm',value.name='density') 
-ph <- ggplot(altdf,aes(x=x,y=density,group=algorithm,colour=algorithm)) + geom_line();
-print(ph)
-
-#datdf$error <- datdf$GramCharlier - datdf$exact
-#ph <- ggplot(datdf,aes(x=x,y=error)) + geom_line();
-#print(ph)
-@
-
-2FIX: ack! 
-
-
-
-%UNFOLD
-
-\section{An Example: Exponential distribution}%FOLDUP
-
-The exponential distribution with parameter $\lambda$ is a continuous
-distribution with density $f(x) = \lambda e^{-\lambda x}$. The $k$th 
-raw moment has value $k! \lambda^{-k}$. \cite{walck:1996} The moments
-function is simple to express, leading to the approximate density function
-via the Gram-Charlier expansion:
-
-<<'expcu',eval=TRUE,echo=TRUE>>=
-library(PDQutils)
-
-# compute the first ord.max raw moments of the exponential distribution
-exp_moments <- function(lambda,ord.max=10) {
-	ords <- 1:ord.max
-	moms <- (factorial(ords)) * (lambda^(-ords))
-	return(moms)
-}
-dexp_apx <- function(x,lambda,ord.max=10,...) {
-	raw.moment <- exp_moments(lambda=lambda,ord.max=ord.max)
-	retval <- dapx_gca(x,raw.moment,support=c(0,Inf),...)
-	return(retval)
-}
-pexp_apx <- function(q,lambda,ord.max=10,...) {
-	raw.moment <- exp_moments(lambda=lambda,ord.max=ord.max)
-	retval <- papx_gca(q,raw.moment,support=c(0,Inf),...)
-	return(retval)
-}
-@
-
-<<'dexp2',eval=TRUE,echo=TRUE,fig.width=4.5,fig.height=4,fig.scap=NA,fig.cap=paste0("We compare the approximate and true density of an exponential distribution...")>>=
-xs <- seq(0,8,length.out=1001)
-lambda <- 1.15
-ord.max <- 15
-datdf <- data.frame(x=xs,exact=pexp(xs,rate=lambda),
-  GramCharlier=pexp_apx(xs,lambda=lambda,ord.max=ord.max))
-datdf <- data.frame(x=xs,exact=dexp(xs,rate=lambda),
-  GramCharlier=dexp_apx(xs,lambda=lambda,ord.max=ord.max))
-require(reshape2)
-require(ggplot2)
-altdf <- melt(datdf,id.vars=c('x'),variable.name='algorithm',value.name='density') 
-ph <- ggplot(altdf,aes(x=x,y=density,group=algorithm,colour=algorithm)) + geom_line();
-print(ph)
-@
-
-
-
-%UNFOLD
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % bibliography%FOLDUP

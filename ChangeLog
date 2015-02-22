@@ -1,4 +1,8 @@
 
+2015-02-21 Steven E. Pav <shabbychef@gmail.com>
+* add Edgeworth expansion.
+* fix buggy Gram Charlier CDF.
+
 2015-02-14 Steven E. Pav <shabbychef@gmail.com>
-* first release
+* first release.
 
