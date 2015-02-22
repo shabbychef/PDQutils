@@ -393,12 +393,12 @@ However, the derivation of the Edgeworth expansion is rather more complicated th
 of the Gram Charlier expansion. \cite{1998A&AS..130..193B} The Edgeworth
 series for a zero-mean unit distribution is 
 $$
-f(x) = \frac{1}{\sigma}\phi\left(\frac{x}{\sigma}\right)\left[1 + \sum_{1\le j} \sigma^s 
-\sum_{\{k_m\}} He_{s+2r}\left(x/\sigma\right) \Pi_{1 \le m \le s}
+f(x) = \frac{1}{\sigma}\phi\left(\frac{x}{\sigma}\right)\left[1 + \sum_{1\le s} \sigma^s 
+\sum_{\{k_m\}} He_{s+2r}\left(x/\sigma\right) \prod_{1 \le m \le s}
 \frac{1}{k_m!}\left(\frac{S_{m+2}}{(m+2)!}\right)^{k_m}\right],
 $$
 where the second sum is over partitions $\{k_m\}$ such that 
-$k_1 + 2k_2 + \ldots + sk_s = s$, where $r=k_1 + k_2 + \ldots + \k_s$, and
+$k_1 + 2k_2 + \ldots + sk_s = s$, where $r=k_1 + k_2 + \ldots + k_s$, and
 where $S_n = \frac{\kappa_n}{\sigma^{2n-2}}$ is a semi-normalized cumulant. 
 %UNFOLD
 
@@ -525,6 +525,22 @@ qsnak <- function(p,dfs,ord.max=10,...) {
 }
 @
 
+An alternative version of the PDF and CDF functions using the Edeworth expanion
+would look as follows:
+<<'dpqsnak2',eval=TRUE,echo=TRUE>>=
+
+dsnak_2 <- function(x,dfs,ord.max=10,...) {
+	raw.cumul <- snak_cumulants(dfs,ord.max)
+	retval <- dapx_edgeworth(x,raw.cumul,support=c(0,Inf),...)
+	return(retval)
+}
+psnak_2 <- function(q,dfs,ord.max=10,...) {
+	raw.cumul <- snak_cumulants(dfs,ord.max)
+	retval <- papx_edgeworth(q,raw.cumul,support=c(0,Inf),...)
+	return(retval)
+}
+@
+
 Using this approximate quantile function, the q-q plot looks straighter, as
 shown in \figref{improvedqq}.
 
@@ -537,19 +553,83 @@ qqline(rvs, distribution=function(p) qsnak(p,dfs),
 
 @
 
-The approximate CDF should be approximately uniform. We can check this, 
-with the empirical CDF shown in \figref{psnak_ecdf}
-
+Note that the q-q plot uses the approximate quantile function, computed via the
+Cornish-Fisher expansion. We can test the Gram Charlier expansion by computing
+the approximate CDF of the random draws and checking that it is nearly
+uniform, as shown in \figref{psnak_ecdf}.
 
 <<'psnak_ecdf',eval=TRUE,echo=TRUE,fig.width=4.5,fig.height=4,fig.scap=NA,fig.cap=paste0("The empirical CDF of the approximate CDF of a sum of Nakagamis distribution on ",n.samp," draws is shown.")>>=
 
 apx.p <- psnak(rvs,dfs=dfs)
-plot(ecdf(apx.p))
+require(ggplot2)
+ph <- qplot(apx.p, stat="ecdf", geom="step")
+print(ph)
 @
 
 
 %UNFOLD
 
+\section{A warning on convergence}
+
+Blinnikov and Moessner note that the 
+the Gram Charlier expansion will actually diverge for some distributions when more terms in
+the expansion are considered, behaviour which is not seen for the Edgeworth expansion. 
+\cite{1998A&AS..130..193B}
+Here, we will replicate their example of the chi-square distribution with 5
+degrees of freedom. Blinnikov and Moessner actually transform the chi-square to
+have zero mean and unit variance. They plot the true PDF of this normalized
+distribution, along with the 2- and 6-term Gram Charlier approximations, as
+shown in \figref{chisetup}.
+
+<<'chisetup',eval=TRUE,echo=TRUE,fig.width=4.5,fig.height=4,fig.scap=NA,fig.cap="The true PDF of a normalized $\\chi^2_5$ distribution is shown, along with the 2- and 6-term Gram Charlier approximations. This replicates Figure 1 of Blinnikov and Moessner. \\cite{1998A&AS..130..193B}">>=
+# compute moments and cumulants:
+df <- 5
+max.ord <- 20
+subords <- 0:(max.ord - 1)
+raw.cumulants <- df * (2^subords) * factorial(subords)
+raw.moments <- cumulant2moment(raw.cumulants)
+
+# compute the PDF of the rescaled variable:
+xvals <- seq(-sqrt(df/2) * 0.99,6,length.out=1001)
+chivals <- sqrt(2*df) * xvals + df
+pdf.true <- sqrt(2*df) * dchisq(chivals,df=df)
+
+pdf.gca2 <- sqrt(2*df) * dapx_gca(chivals,raw.moments=raw.moments[1:2],support=c(0,Inf))
+pdf.gca6 <- sqrt(2*df) * dapx_gca(chivals,raw.moments=raw.moments[1:6],support=c(0,Inf))
+
+all.pdf <- data.frame(x=xvals,true=pdf.true,gca2=pdf.gca2,gca6=pdf.gca6)
+
+# plot it by reshaping and ggplot'ing
+require(reshape2)
+arr.data <- melt(all.pdf,id.vars='x',variable.name='pdf',value.name='density')
+
+require(ggplot2)
+ph <- ggplot(arr.data,aes(x=x,y=density,group=pdf,colour=pdf)) + geom_line()
+print(ph)
+@
+
+Compare this with the 2 and 4 term Edgeworth expansions, shown in
+\figuref{chitwo}.
+
+<<'chitwo',eval=TRUE,echo=TRUE,fig.width=4.5,fig.height=4,fig.scap=NA,fig.cap="The true PDF of a normalized $\\chi^2_5$ distribution is shown, along with the 2- and 4-term Edgeworth expansions. This replicates Figure 6 of Blinnikov and Moessner. \\cite{1998A&AS..130..193B}">>=
+# compute the PDF of the rescaled variable:
+xvals <- seq(-sqrt(df/2) * 0.99,6,length.out=1001)
+chivals <- sqrt(2*df) * xvals + df
+pdf.true <- sqrt(2*df) * dchisq(chivals,df=df)
+
+pdf.edgeworth2 <- sqrt(2*df) * dapx_edgeworth(chivals,raw.cumulants=raw.cumulants[1:4],support=c(0,Inf))
+pdf.edgeworth4 <- sqrt(2*df) * dapx_edgeworth(chivals,raw.cumulants=raw.cumulants[1:6],support=c(0,Inf))
+
+all.pdf <- data.frame(x=xvals,true=pdf.true,edgeworth2=pdf.edgeworth2,edgeworth4=pdf.edgeworth4)
+
+# plot it by reshaping and ggplot'ing
+require(reshape2)
+arr.data <- melt(all.pdf,id.vars='x',variable.name='pdf',value.name='density')
+
+require(ggplot2)
+ph <- ggplot(arr.data,aes(x=x,y=density,group=pdf,colour=pdf)) + geom_line()
+print(ph)
+@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % bibliography%FOLDUP
