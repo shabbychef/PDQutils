@@ -609,7 +609,7 @@ print(ph)
 @
 
 Compare this with the 2 and 4 term Edgeworth expansions, shown in
-\figuref{chitwo}.
+\figref{chitwo}.
 
 <<'chitwo',eval=TRUE,echo=TRUE,fig.width=4.5,fig.height=4,fig.scap=NA,fig.cap="The true PDF of a normalized $\\chi^2_5$ distribution is shown, along with the 2- and 4-term Edgeworth expansions. This replicates Figure 6 of Blinnikov and Moessner. \\cite{1998A&AS..130..193B}">>=
 # compute the PDF of the rescaled variable:
