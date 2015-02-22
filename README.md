@@ -185,7 +185,7 @@ ph <- ggplot(arr.data, aes(x = x, y = density, group = pdf,
 ph
 ```
 
-![plot of chunk chisetup](github_extra/figure/chisetup-1.png) 
+<img src="github_extra/figure/chisetup-1.png" title="plot of chunk chisetup" alt="plot of chunk chisetup" width="600px" height="500px" />
 
 Compare this with the 2 and 4 term Edgeworth expansions, replicating figure 6 of Blinnikov and Moessner:
 
@@ -216,6 +216,6 @@ ph <- ggplot(arr.data, aes(x = x, y = density, group = pdf,
 ph
 ```
 
-![plot of chunk chitwo](github_extra/figure/chitwo-1.png) 
+<img src="github_extra/figure/chitwo-1.png" title="plot of chunk chitwo" alt="plot of chunk chitwo" width="600px" height="500px" />
 
 

@@ -166,7 +166,7 @@ the expansion are considered, behaviour which is not seen for the Edgeworth expa
 the case of a chi-square distribution with 5 degrees of freedom. The 2 and 6 term Gram Charlier expansions
 are shown, along with the true value of the PDF, replicating figure 1 of Blinnikov and Moessner:
 
-```{r chisetup,eval=TRUE,echo=TRUE}
+```{r chisetup,eval=TRUE,echo=TRUE,dpi=200,out.width='600px',out.height='500px'}
 # compute moments and cumulants:
 df <- 5
 max.ord <- 20
@@ -194,7 +194,7 @@ ph
 ```
 
 Compare this with the 2 and 4 term Edgeworth expansions, replicating figure 6 of Blinnikov and Moessner:
-```{r chitwo,eval=TRUE,echo=TRUE}
+```{r chitwo,eval=TRUE,echo=TRUE,dpi=200,out.width='600px',out.height='500px'}
 # compute the PDF of the rescaled variable:
 xvals <- seq(-sqrt(df/2) * 0.99,6,length.out=1001)
 chivals <- sqrt(2*df) * xvals + df
