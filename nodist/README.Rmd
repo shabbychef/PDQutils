@@ -190,7 +190,7 @@ arr.data <- melt(all.pdf,id.vars='x',variable.name='pdf',value.name='density')
 
 require(ggplot2)
 ph <- ggplot(arr.data,aes(x=x,y=density,group=pdf,colour=pdf)) + geom_line()
-ph
+print(ph)
 ```
 
 Compare this with the 2 and 4 term Edgeworth expansions, replicating figure 6 of Blinnikov and Moessner:
@@ -211,7 +211,6 @@ arr.data <- melt(all.pdf,id.vars='x',variable.name='pdf',value.name='density')
 
 require(ggplot2)
 ph <- ggplot(arr.data,aes(x=x,y=density,group=pdf,colour=pdf)) + geom_line()
-ph
+print(ph)
 ```
-
 

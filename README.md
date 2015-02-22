@@ -182,7 +182,7 @@ arr.data <- melt(all.pdf, id.vars = "x", variable.name = "pdf",
 require(ggplot2)
 ph <- ggplot(arr.data, aes(x = x, y = density, group = pdf, 
     colour = pdf)) + geom_line()
-ph
+print(ph)
 ```
 
 <img src="github_extra/figure/chisetup-1.png" title="plot of chunk chisetup" alt="plot of chunk chisetup" width="600px" height="500px" />
@@ -213,9 +213,8 @@ arr.data <- melt(all.pdf, id.vars = "x", variable.name = "pdf",
 require(ggplot2)
 ph <- ggplot(arr.data, aes(x = x, y = density, group = pdf, 
     colour = pdf)) + geom_line()
-ph
+print(ph)
 ```
 
 <img src="github_extra/figure/chitwo-1.png" title="plot of chunk chitwo" alt="plot of chunk chitwo" width="600px" height="500px" />
-
 
