@@ -131,7 +131,8 @@ qqline(rvs, distribution = function(p) qsnak(p, dfs),
 <img src="github_extra/figure/improvedqq-1.png" title="plot of chunk improvedqq" alt="plot of chunk improvedqq" width="600px" height="500px" />
 
 Note that the q-q plot uses the approximate quantile function, qsnak. If we compute the
-approximate CDF of the random draws, we hope it will be nearly uniform:
+approximate CDF of the random draws, we hope it will be nearly uniform, and indeed
+it is:
 
 
 ```r
@@ -143,7 +144,78 @@ if (require(ggplot2)) {
 
 <img src="github_extra/figure/snakuni-1.png" title="plot of chunk snakuni" alt="plot of chunk snakuni" width="600px" height="500px" />
 
+# Edgeworth versus Gram Charlier
+
+[Blinnikov and Moessner](http://arxiv.org/abs/astro-ph/9711239 "Blinnikov and Moessner") note that
+the Gram Charlier expansion will actually _diverge_ for some distributions when more terms in
+the expansion are considered, behaviour which is not seen for the Edgeworth expansion. We will consider
+the case of a chi-square distribution with 5 degrees of freedom. The 2 and 6 term Gram Charlier expansions
+are shown, along with the true value of the PDF, replicating figure 1 of Blinnikov and Moessner:
 
 
+```r
+# compute moments and cumulants:
+df <- 5
+max.ord <- 20
+subords <- 0:(max.ord - 1)
+raw.cumulants <- df * (2^subords) * factorial(subords)
+raw.moments <- cumulant2moment(raw.cumulants)
+
+# compute the PDF of the rescaled variable:
+xvals <- seq(-sqrt(df/2) * 0.99, 6, length.out = 1001)
+chivals <- sqrt(2 * df) * xvals + df
+pdf.true <- sqrt(2 * df) * dchisq(chivals, df = df)
+
+pdf.gca2 <- sqrt(2 * df) * dapx_gca(chivals, raw.moments = raw.moments[1:2], 
+    support = c(0, Inf))
+pdf.gca6 <- sqrt(2 * df) * dapx_gca(chivals, raw.moments = raw.moments[1:6], 
+    support = c(0, Inf))
+
+all.pdf <- data.frame(x = xvals, true = pdf.true, gca2 = pdf.gca2, 
+    gca6 = pdf.gca6)
+
+# plot it by reshaping and ggplot'ing
+require(reshape2)
+arr.data <- melt(all.pdf, id.vars = "x", variable.name = "pdf", 
+    value.name = "density")
+
+require(ggplot2)
+ph <- ggplot(arr.data, aes(x = x, y = density, group = pdf, 
+    colour = pdf)) + geom_line()
+ph
+```
+
+![plot of chunk chisetup](github_extra/figure/chisetup-1.png) 
+
+Compare this with the 2 and 4 term Edgeworth expansions, replicating figure 6 of Blinnikov and Moessner:
+
+```r
+# compute the PDF of the rescaled variable:
+xvals <- seq(-sqrt(df/2) * 0.99, 6, length.out = 1001)
+chivals <- sqrt(2 * df) * xvals + df
+pdf.true <- sqrt(2 * df) * dchisq(chivals, df = df)
+
+pdf.edgeworth2 <- sqrt(2 * df) * dapx_edgeworth(chivals, 
+    raw.cumulants = raw.cumulants[1:4], support = c(0, 
+        Inf))
+pdf.edgeworth4 <- sqrt(2 * df) * dapx_edgeworth(chivals, 
+    raw.cumulants = raw.cumulants[1:6], support = c(0, 
+        Inf))
+
+all.pdf <- data.frame(x = xvals, true = pdf.true, edgeworth2 = pdf.edgeworth2, 
+    edgeworth4 = pdf.edgeworth4)
+
+# plot it by reshaping and ggplot'ing
+require(reshape2)
+arr.data <- melt(all.pdf, id.vars = "x", variable.name = "pdf", 
+    value.name = "density")
+
+require(ggplot2)
+ph <- ggplot(arr.data, aes(x = x, y = density, group = pdf, 
+    colour = pdf)) + geom_line()
+ph
+```
+
+![plot of chunk chitwo](github_extra/figure/chitwo-1.png) 
 
 
