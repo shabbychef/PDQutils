@@ -25,7 +25,7 @@ M4_FILES					?= $(wildcard m4/*.m4)
 VMAJOR 						 = 0
 VMINOR 						 = 1
 VPATCH  					 = 0
-VDEV 							 = .9001
+VDEV 							 = .9002
 #VERSION 					 = 0.1402
 VERSION 					 = $(VMAJOR).$(VMINOR).$(VPATCH)$(VDEV)
 TODAY 						:= $(shell date +%Y-%m-%d)
@@ -145,7 +145,7 @@ PREBIB       = BSTINPUTS=$(TEXINPADD):$$BSTINPUTS \
 BIBTEX      := $(shell which bibtex)
 LATEX       := $(shell which latex)
 
-BASE_DEF_PACKAGES   = "utils,graphics,grDevices,methods,stats,$(PKG_NAME)"
+BASE_DEF_PACKAGES   = utils,graphics,grDevices,methods,stats,$(PKG_NAME)
 
 #FAST_
 

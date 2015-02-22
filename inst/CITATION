@@ -3,7 +3,7 @@ citHeader("To cite the 'PDQutils' package in publications use:")
 
 year = sub('.*(2[[:digit:]]{3})-.*', '\\1', meta$Date, perl = TRUE)
 vers = paste('R package version', meta$Version)
-fix.title = gsub("Corni","{C}orni", gsub("Fish","{F}ish", gsub("Gram","{G}ram", gsub("Charl","{C}harl", gsub("PDQ","{PDQ}",meta$Title)))))
+fix.title = gsub("Corni","{C}orni", gsub("Fish","{F}ish", gsub("Gram","{G}ram", gsub("Charl","{C}harl", gsub("Edge","{E}dge", gsub("PDQ","{PDQ}",meta$Title))))))
 
 citEntry(
   entry = "manual",

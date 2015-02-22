@@ -2,7 +2,7 @@
 
 # PDQutils
 
-PDQ Functions via Gram Charlier and Cornish Fisher Approximations
+PDQ Functions via Gram Charlier, Edgeworth, and Cornish Fisher Approximations
 
 -- Steven E. Pav, shabbychef@gmail.com
 
@@ -22,7 +22,7 @@ if (require(devtools)) {
 
 # Basic Usage
 
-Approximating the distribution of a random variable via the Gram Charlier or Cornish Fisher
+Approximating the distribution of a random variable via the Gram Charlier, Edgeworth, or Cornish Fisher
 expansions is most convenient when the random variable can be decomposed as the sum of a 
 small number of independent random variables whose cumulants can be computed. For example, 
 suppose $Y = \sum_{1 \le i \le k} \sqrt{X_i / \nu_i}$ where the $X_i$ are independent central 
@@ -41,7 +41,9 @@ rsnak <- function(n, dfs) {
 }
 ```
 
-Let's take one hundred thousand draws from this distribution and see whether it is approximately normal:
+Let's take one hundred thousand draws from this distribution and see whether it is approximately normal,
+by performing a q-q plot against a normal distribution.
+
 
 
 ```r
@@ -56,6 +58,7 @@ qqline(rvs, col = "red")
 
 <img src="github_extra/figure/testit-1.png" title="plot of chunk testit" alt="plot of chunk testit" width="600px" height="500px" />
 
+While this is very nearly normal, we can get a better approximation.
 Using the additivity
 property of cumulants, we can compute the cumulants of $Y$ easily if we have the cumulants of
 the $X_i$. These in turn can be computed from the raw moments.  See
@@ -98,6 +101,7 @@ dsnak <- function(x, dfs, ord.max = 10, ...) {
         ord.max))
     retval <- dapx_gca(x, raw.moment, support = c(0, 
         Inf), ...)
+    
     return(retval)
 }
 psnak <- function(q, dfs, ord.max = 10, ...) {
@@ -115,7 +119,7 @@ qsnak <- function(p, dfs, ord.max = 10, ...) {
 }
 ```
 
-The qqplot should look better now:
+The q-q plot looks better now:
 
 
 ```r
@@ -125,5 +129,21 @@ qqline(rvs, distribution = function(p) qsnak(p, dfs),
 ```
 
 <img src="github_extra/figure/improvedqq-1.png" title="plot of chunk improvedqq" alt="plot of chunk improvedqq" width="600px" height="500px" />
+
+Note that the q-q plot uses the approximate quantile function, qsnak. If we compute the
+approximate CDF of the random draws, we hope it will be nearly uniform:
+
+
+```r
+apx.p <- psnak(rvs, dfs = dfs)
+if (require(ggplot2)) {
+    qplot(apx.p, stat = "ecdf", geom = "step")
+}
+```
+
+<img src="github_extra/figure/snakuni-1.png" title="plot of chunk snakuni" alt="plot of chunk snakuni" width="600px" height="500px" />
+
+
+
 
 

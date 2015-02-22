@@ -2,17 +2,16 @@
 #'
 #' Given the raw cumulants of a probability distribution, we can approximate the probability 
 #' density function, or the cumulative distribution function, via an Edgeworth
-#' expansion on the standardized distribution.
-#'
-#' Suppose \eqn{f(x)}{f(x)} is the probability density of some random
-#' variable, and let \eqn{F(x)}{F(x)} be the cumulative distribution function.
-#' Let \eqn{He_j(x)}{He_j(x)} be the \eqn{j}{j}th probabilist's Hermite
-#' polynomial. These polynomials form an orthogonal basis, with respect to the
-#' function \eqn{w(x)}{w(x)} of the Hilbert space of functions which are square
-#' \eqn{w}{w}-weighted integrable. The weighting functimn is 
-#' \eqn{w(x) = e^{-x^2/2} = \sqrt{2\pi}\phi(x)}{w(x) = e^{-x^2/2} = sqrt(2pi) phi(x)}.
-#' The orthogonality relationship is
-#' \deqn{\int_{-\infty}^{\infty} He_i(x) He_j(x) w(x) \mathrm{d}x = \sqrt{2\pi} j! \delta_{ij}.}{integral_-inf^inf He_i(x) He_j(x) w(x) dx = sqrt(2pi)j!dirac_ij.}
-#'
-#' ... 2FIX: fill in here.
+#' expansion on the standardized distribution. The derivation of the Edgeworth
+#' expansion is rather more complicated than that of the Gram Charlier
+#' approximation, involving the characteristic function and an expression of
+#' the higher order derivatives of the composition of functions; see
+#' Blinnikov and Moessner for more details. The Edgeworth expansion can
+#' be expressed succinctly as
+#' \deqn{\sigma f(\sigma x) = \phi(x) + \phi(x)\sum_{1 \le s}\sigma^s \sum_{\{k_m\}} He_{s+2r}(x) c_{k_m},}{sigma f(sigma x) = phi(x) + phi(x)  sum_{1 <= s} sigma^s sum_{k_m} He_{s+2r}(x) c_{k_m},}
+#' where the second sum is over some partitions, and the constant \eqn{c} 
+#' involves cumulants up to order \eqn{s+2}. Unlike the Gram Charlier
+#' expansion, of which it is a rearrangement, the Edgeworth expansion
+#' is arranged in increasing powers of the standard deviation
+#' \eqn{\sigma}{sigma}.
 #'

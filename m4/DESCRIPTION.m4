@@ -9,7 +9,7 @@ Authors@R: c(person(c("Steven", "E."), "Pav", role=c("aut","cre"),
 Version: VERSION()
 Date: DATE()
 License: LGPL-3
-Title: PDQ Functions via Gram Charlier and Cornish Fisher Approximations
+Title: PDQ Functions via Gram Charlier, Edgeworth, and Cornish Fisher Approximations
 BugReports: https://github.com/shabbychef/PKG_NAME()/issues
 Description: A collection of tools for approximating the 'PDQ' functions (respectively, the 
     cumulative distribution, density, and quantile) of probability distributions via classical 

@@ -2,10 +2,10 @@ Package: PDQutils
 Maintainer: Steven E. Pav <shabbychef@gmail.com>
 Authors@R: c(person(c("Steven", "E."), "Pav", role=c("aut","cre"),
     email="shabbychef@gmail.com"))
-Version: 0.1.0.9001
-Date: 2015-02-19
+Version: 0.1.0.9002
+Date: 2015-02-21
 License: LGPL-3
-Title: PDQ Functions via Gram Charlier and Cornish Fisher Approximations
+Title: PDQ Functions via Gram Charlier, Edgeworth, and Cornish Fisher Approximations
 BugReports: https://github.com/shabbychef/PDQutils/issues
 Description: A collection of tools for approximating the 'PDQ' functions (respectively, the 
     cumulative distribution, density, and quantile) of probability distributions via classical 
