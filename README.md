@@ -2,6 +2,8 @@
 
 # PDQutils
 
+[![Build Status](https://travis-ci.org/shabbychef/PDQutils.png)](https://travis-ci.org/shabbychef/PDQutils)
+
 PDQ Functions via Gram Charlier, Edgeworth, and Cornish Fisher Approximations
 
 -- Steven E. Pav, shabbychef@gmail.com
