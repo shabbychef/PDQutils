@@ -345,7 +345,7 @@ checksee : $(RCHECK_SENTINEL)
 
 $(DRAT_SENTINEL) : $(PKG_TGZ)
 	$(call WARN_DEPS)
-	$(R) --slave -e "drat:::insertPackage('$<',repodir='~/.github/drat')"
+	$(R) --slave -e "drat:::insertPackage('$<',repodir='~/github/drat',commit=TRUE)"
 
 dratit : $(DRAT_SENTINEL)
 
