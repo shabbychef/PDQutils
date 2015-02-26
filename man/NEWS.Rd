@@ -12,7 +12,7 @@ News for package 'PDQutils':
 \newcommand{\CRANpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\PDQutils}{\CRANpkg{PDQutils}}
 }
-\section{\PDQutils{} Version 0.1.1 (2015-02-??) }{
+\section{\PDQutils{} Version 0.1.1 (2015-02-26) }{
 
 \itemize{
 \item Edgeworth expansions.

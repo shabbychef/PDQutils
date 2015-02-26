@@ -96,31 +96,51 @@ snak_cumulants <- function(dfs, ord.max = 10) {
 }
 ```
 
-We can now implement the 'dpq' functions trivially using the Gram-Charlier and Cornish-Fisher
+We can now implement the 'dpq' functions trivially using the Edgeworth and Cornish Fisher
 approximations, as follows:
 
 
 ```r
 library(PDQutils)
 
-dsnak <- function(x, dfs, ord.max = 10, ...) {
-    raw.moment <- cumulant2moment(snak_cumulants(dfs, 
-        ord.max))
-    retval <- dapx_gca(x, raw.moment, support = c(0, 
+dsnak <- function(x, dfs, ord.max = 6, ...) {
+    raw.cumul <- snak_cumulants(dfs, ord.max)
+    retval <- dapx_edgeworth(x, raw.cumul, support = c(0, 
         Inf), ...)
-    
     return(retval)
 }
-psnak <- function(q, dfs, ord.max = 10, ...) {
-    raw.moment <- cumulant2moment(snak_cumulants(dfs, 
-        ord.max))
-    retval <- papx_gca(q, raw.moment, support = c(0, 
+psnak <- function(q, dfs, ord.max = 6, ...) {
+    raw.cumul <- snak_cumulants(dfs, ord.max)
+    retval <- papx_edgeworth(q, raw.cumul, support = c(0, 
         Inf), ...)
     return(retval)
 }
 qsnak <- function(p, dfs, ord.max = 10, ...) {
     raw.cumul <- snak_cumulants(dfs, ord.max)
     retval <- qapx_cf(p, raw.cumul, support = c(0, 
+        Inf), ...)
+    return(retval)
+}
+```
+
+The density and distribution functions could also have been implemented via the 
+Gram Charlier expansion, although there seems to be little justification for so doing,
+as the Edgeworth expansion is 
+[often a better approximation](http://arxiv.org/abs/astro-ph/9711239 "Blinnikov and Moessner").
+
+
+```r
+dsnak_2 <- function(x, dfs, ord.max = 10, ...) {
+    raw.moment <- cumulant2moment(snak_cumulants(dfs, 
+        ord.max))
+    retval <- dapx_gca(x, raw.moment, support = c(0, 
+        Inf), ...)
+    return(retval)
+}
+psnak_2 <- function(q, dfs, ord.max = 10, ...) {
+    raw.moment <- cumulant2moment(snak_cumulants(dfs, 
+        ord.max))
+    retval <- papx_gca(q, raw.moment, support = c(0, 
         Inf), ...)
     return(retval)
 }

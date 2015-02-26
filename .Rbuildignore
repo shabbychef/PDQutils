@@ -6,6 +6,7 @@
 .staging
 .tags
 .travis.yml
+^.drat_
 aux$
 log$
 out$

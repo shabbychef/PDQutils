@@ -4,9 +4,9 @@
 \name{PDQutils}
 \alias{PDQutils}
 \alias{PDQutils-package}
-\title{PDQ Functions via Gram Charlier and Cornish Fisher Approximations}
+\title{PDQ Functions via Gram Charlier, Edgeworth, and Cornish Fisher Approximations}
 \description{
-PDQ Functions via Gram Charlier and Cornish Fisher Approximations
+PDQ Functions via Gram-Charlier, Edgeworth, and Cornish Fisher Approximations
 }
 \note{
 This package is maintained as a hobby.

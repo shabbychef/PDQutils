@@ -117,21 +117,20 @@ snak_cumulants <- function(dfs,ord.max=10) {
 }
 ```
 
-We can now implement the 'dpq' functions trivially using the Gram-Charlier and Cornish-Fisher
+We can now implement the 'dpq' functions trivially using the Edgeworth and Cornish Fisher
 approximations, as follows:
 
 ```{r dpqsnak,eval=TRUE,echo=TRUE}
 library(PDQutils)
 
-dsnak <- function(x,dfs,ord.max=10,...) {
-	raw.moment <- cumulant2moment(snak_cumulants(dfs,ord.max))
-	retval <- dapx_gca(x,raw.moment,support=c(0,Inf),...)
-
+dsnak <- function(x,dfs,ord.max=6,...) {
+	raw.cumul <- snak_cumulants(dfs,ord.max)
+	retval <- dapx_edgeworth(x,raw.cumul,support=c(0,Inf),...)
 	return(retval)
 }
-psnak <- function(q,dfs,ord.max=10,...) {
-	raw.moment <- cumulant2moment(snak_cumulants(dfs,ord.max))
-	retval <- papx_gca(q,raw.moment,support=c(0,Inf),...)
+psnak <- function(q,dfs,ord.max=6,...) {
+	raw.cumul <- snak_cumulants(dfs,ord.max)
+	retval <- papx_edgeworth(q,raw.cumul,support=c(0,Inf),...)
 	return(retval)
 }
 qsnak <- function(p,dfs,ord.max=10,...) {
@@ -141,9 +140,28 @@ qsnak <- function(p,dfs,ord.max=10,...) {
 }
 ```
 
+The density and distribution functions could also have been implemented via the 
+Gram Charlier expansion, although there seems to be little justification for so doing,
+as the Edgeworth expansion is 
+[often a better approximation](http://arxiv.org/abs/astro-ph/9711239 "Blinnikov and Moessner").
+
+```{r dpqsnak_gca,eval=TRUE,echo=TRUE}
+
+dsnak_2 <- function(x,dfs,ord.max=10,...) {
+	raw.moment <- cumulant2moment(snak_cumulants(dfs,ord.max))
+	retval <- dapx_gca(x,raw.moment,support=c(0,Inf),...)
+	return(retval)
+}
+psnak_2 <- function(q,dfs,ord.max=10,...) {
+	raw.moment <- cumulant2moment(snak_cumulants(dfs,ord.max))
+	retval <- papx_gca(q,raw.moment,support=c(0,Inf),...)
+	return(retval)
+}
+```
+
 The q-q plot looks better now:
 
-```{r improvedqq,eval=TRUE,echo=TRUE,dpi=200,out.width='600px',out.height='500px'}
+```{r improvedqq,eval=TRUE,echo=TRUE,cache=FALSE,dpi=200,out.width='600px',out.height='500px'}
 
 qqplot(qsnak(ppoints(n.samp),dfs=dfs),rvs,
 	main='Q-Q against qsnak (C-F appx.)')
@@ -156,7 +174,7 @@ Note that the q-q plot uses the approximate quantile function, qsnak. If we comp
 approximate CDF of the random draws, we hope it will be nearly uniform, and indeed
 it is:
 
-```{r snakuni,eval=TRUE,echo=TRUE,dpi=200,out.width='600px',out.height='500px'}
+```{r snakuni,eval=TRUE,echo=TRUE,cache=FALSE,dpi=200,out.width='600px',out.height='500px'}
 
 apx.p <- psnak(rvs,dfs=dfs)
 if (require(ggplot2)) {

@@ -21,7 +21,7 @@
 # Author: Steven E. Pav
 # Comments: Steven E. Pav
 
-#' PDQ Functions via Gram Charlier and Cornish Fisher Approximations
+#' PDQ Functions via Gram-Charlier, Edgeworth, and Cornish Fisher Approximations
 #' 
 #' @section Gram Charlier and Edgeworth Expansions:
 #'
@@ -57,7 +57,6 @@
 #' case that the computation of these coefficients suffers from bad numerical
 #' cancellation for some distributions, and that an alternative formulation
 #' may be more numerically robust.
-#'
 #' 
 #' @section Cornish Fisher Approximation:
 #'
@@ -104,7 +103,7 @@
 #' @name PDQutils
 #' @rdname PDQutils
 #' @docType package
-#' @title PDQ Functions via Gram Charlier and Cornish Fisher Approximations
+#' @title PDQ Functions via Gram Charlier, Edgeworth, and Cornish Fisher Approximations
 #' @keywords package
 #' 
 #' @note 
@@ -118,7 +117,7 @@ NULL
 #' \newcommand{\CRANpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\PDQutils}{\CRANpkg{PDQutils}}
 #'
-#' @section \PDQutils{} Version 0.1.1 (2015-02-??) :
+#' @section \PDQutils{} Version 0.1.1 (2015-02-26) :
 #' \itemize{
 #' \item Edgeworth expansions.
 #' }
