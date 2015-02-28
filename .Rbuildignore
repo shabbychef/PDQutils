@@ -16,8 +16,8 @@ Makefile
 man-roxygen
 nodist
 rebuildTags.sh
-SKELETON_\d.\d+.tar.gz$
-SKELETON.Rcheck
+PDQutils_\d.\d+.tar.gz$
+PDQutils.Rcheck
 ^github_extra
 unit_test.log
 LICENSE
