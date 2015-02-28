@@ -207,6 +207,7 @@ help:
 	@echo "---------------"
 	@echo "  check      Make build, then R CMD check the package as CRAN."
 	@echo "  gitpush    Yes, I am lazy"
+	@echo "  dratit     Make build, then upload package to my drat repo."
 	@echo ""
 	@echo "Using: "
 	@echo "         RBIN: $(RBIN) "
