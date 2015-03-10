@@ -245,3 +245,50 @@ print(ph)
 
 <img src="github_extra/figure/chitwo-1.png" title="plot of chunk chitwo" alt="plot of chunk chitwo" width="600px" height="500px" />
 
+# Rearranging for monotonicity 
+
+In one of a series of papers, [Chernozhukov et. al.](http://arxiv.org/abs/0708.1627 "Chernozhukov et. al.") 
+demonstrate the use of monotonic rearrangements in Edgeworth and Cornish-Fisher expansions of the CDF
+and quantile functions, which are, by definition, non-decreasing. It is shown that monotone rearrangement
+reduces the error of an initial approximation. This is easy enough to code with tools readily available
+in R.  First, let us compute the 8 term Gram Charlier approximation to the CDF of the Chi-square with
+5 degrees of freedom. This should display non-monotonicity. Then we compute the monotonic rearrangement:
+
+
+```r
+df <- 5
+max.ord <- 20
+subords <- 0:(max.ord - 1)
+raw.cumulants <- df * (2^subords) * factorial(subords)
+raw.moments <- cumulant2moment(raw.cumulants)
+
+# compute the CDF of the rescaled variable:
+xvals <- seq(-sqrt(df/2) * 0.99, 6, length.out = 1001)
+chivals <- sqrt(2 * df) * xvals + df
+cdf.true <- pchisq(chivals, df = df)
+cdf.gca8 <- papx_gca(chivals, raw.moments = raw.moments[1:8], 
+    support = c(0, Inf))
+
+# it is this simple:
+require(quantreg)
+in.fn <- stepfun(xvals, c(0, cdf.gca8))
+out.fn <- rearrange(in.fn)
+cdf.rearranged <- out.fn(xvals)
+
+all.cdf <- data.frame(x = xvals, true = cdf.true, gca8 = cdf.gca8, 
+    rearranged = cdf.rearranged)
+
+# plot it by reshaping and ggplot'ing
+require(reshape2)
+arr.data <- melt(all.cdf, id.vars = "x", variable.name = "cdf", 
+    value.name = "density")
+
+require(ggplot2)
+ph <- ggplot(arr.data, aes(x = x, y = density, group = cdf, 
+    colour = cdf)) + geom_line()
+print(ph)
+```
+
+<img src="github_extra/figure/chithree-1.png" title="plot of chunk chithree" alt="plot of chunk chithree" width="600px" height="500px" />
+
+
