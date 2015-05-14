@@ -17,7 +17,7 @@ install.packages("PDQutils")
 ```
 If you need access to the latest release (typically this is not much newer
 than the CRAN package), use drat:
-```
+```r
 # dev:
 library(drat)
 drat:::add("shabbychef")
