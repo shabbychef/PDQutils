@@ -25,6 +25,22 @@
 require(orthopolynom)
 require(moments)
 
+.guess_par <- function(raw.moments,gammapar=NULL) {
+	# moments for gamma are kΘ and kΘ² + (kθ)²
+	if (is.null(gammapar)) {
+		theta <- (raw.moments[2]/raw.moments[1]) - raw.moments[1]
+		k <- raw.moments[1] / theta
+		gammapar <- list(shape=k,scale=theta)
+	}
+	gammapar
+}
+
+# here's the skinny. let g(x) be the pdf of the gamma RV w/ shape k and scale Θ.
+# g(x) = (1 / (Γ(k) Θ)) * (x/Θ)^(k-1) * exp(-(x/Θ))
+# Let L_n^(k-1) be the nth generalized Laguerre polynomial with alpha=k-1
+# then
+# integral_0^\inf L_n^(k-1)(x/Θ) L_m^(k-1)(x/Θ) g(x)dx = δ_n,m Γ(n+k) / (Γ(k) n!)
+
 #' @title Approximate density and distribution via Gram-Charlier A expansion.
 #'
 #' @description 
@@ -35,9 +51,9 @@ require(moments)
 #'
 #' @usage
 #'
-#' dapx_gca(x, raw.moments, support=c(-Inf,Inf), log=FALSE)
+#' dapx_gca(x, raw.moments, support=c(-Inf,Inf), basis=c('normal','gamma'), gammapar=NULL, log=FALSE)
 #'
-#' papx_gca(q, raw.moments, support=c(-Inf,Inf), lower.tail=TRUE, log.p=FALSE)
+#' papx_gca(q, raw.moments, support=c(-Inf,Inf), basis=c('normal','gamma'), gammapar=NULL, lower.tail=TRUE, log.p=FALSE)
 #'
 #' @param x where to evaluate the approximate density.
 #' @param q where to evaluate the approximate distribution.
@@ -45,6 +61,14 @@ require(moments)
 #' of the probability distribution. 
 #' @param support the support of the density function. It is assumed
 #' that the density is zero on the complement of this open interval.
+#' @param basis the basis under which to perform the approximation. \code{'normal'}
+#' gives the classical expansion around the PDF and CDF of the normal
+#' distribution via Hermite polynomials. \code{'gamma'} expands around a
+#' gamma distribution with parameters \code{gammapar$shape} and
+#' \code{gammapar$scale}.
+#' @param gammapar the parameters for the gamma distribution approximation. Only
+#' used under the gamma basis. If \code{NULL}, the shape and rate are inferred
+#' from the first two moments.
 #' @param log logical; if TRUE, densities \eqn{f} are given 
 #'  as \eqn{\mbox{log}(f)}{log(f)}.
 #' @param log.p logical; if TRUE, probabilities p are given 
@@ -75,8 +99,9 @@ require(moments)
 #' p2 <- pnorm(qvals)
 #' p1 - p2
 #' @template etc
-dapx_gca <- function(x,raw.moments,support=c(-Inf,Inf),log=FALSE) {#FOLDUP
+dapx_gca <- function(x,raw.moments,support=c(-Inf,Inf),basis=c('normal','gamma'),gammapar=NULL,log=FALSE) {#FOLDUP
 	order.max <- length(raw.moments)
+	basis <- match.arg(basis)
 
 	# standardize the distribution 
 	mu.central <- moments::raw2central(c(1,raw.moments))
@@ -86,19 +111,43 @@ dapx_gca <- function(x,raw.moments,support=c(-Inf,Inf),log=FALSE) {#FOLDUP
 	mu <- raw.moments[1]
 	sigma <- sqrt(mu.central[3])
 
-	# the studentized variable:
-	eta <- (x - mu) / sigma
-	hermi <- orthopolynom::hermite.he.polynomials(order.max+1, normalized=FALSE)
+	if (basis == 'normal') {
+		# the studentized variable:
+		eta <- (x - mu) / sigma
+		hermi <- orthopolynom::hermite.he.polynomials(order.max+1, normalized=FALSE)
 
-	retval <- dnorm(eta)
-	phi.eta <- retval
-	for (iii in c(1:order.max)) {
-		ci <- (sum(coef(hermi[[iii+1]]) * mu.std[1:(iii+1)])) / factorial(iii)
-		retval <- retval + ci * phi.eta * as.function(hermi[[iii+1]])(eta)
+		retval <- dnorm(eta)
+		phi.eta <- retval
+		for (iii in c(1:order.max)) {
+			ci <- (sum(coef(hermi[[iii+1]]) * mu.std[1:(iii+1)])) / factorial(iii)
+			retval <- retval + ci * phi.eta * as.function(hermi[[iii+1]])(eta)
+		}
+
+		# adjust back from standardized
+		retval <- retval / sigma
+	} else if (basis == 'gamma') {
+		gammapar <- .guess_par(raw.moments,gammapar)
+
+		# the studentized variable, for a chi-square
+		scalby <- 1/gammapar$scale
+		eta <- x * scalby
+
+		alpha <- gammapar$shape - 1
+		glag <- orthopolynom::glaguerre.polynomials(order.max+1, alpha, normalized=FALSE)
+
+		retval <- dgamma(eta,shape=gammapar$shape,scale=1)
+		phi.eta <- retval
+		for (iii in c(1:order.max)) {
+# 2FIX: the weighting all bad...
+			ci <- (sum(coef(glag[[iii+1]]) * mu.std[1:(iii+1)])) / factorial(iii)
+			retval <- retval + ci * phi.eta * as.function(glag[[iii+1]])(x)
+		}
+
+		# adjust back from standardized
+		retval <- retval * scalby
+	} else {
+		stop('unknown basis')
 	}
-
-	# adjust back from standardized
-	retval <- retval / sigma
 
 	# sanity check; shall I throw a warning?
 	retval <- pmax(0,retval)
@@ -117,8 +166,9 @@ dapx_gca <- function(x,raw.moments,support=c(-Inf,Inf),log=FALSE) {#FOLDUP
 	return(retval)
 }#UNFOLD
 #' @export 
-papx_gca <- function(q,raw.moments,support=c(-Inf,Inf),lower.tail=TRUE,log.p=FALSE) {#FOLDUP
+papx_gca <- function(q,raw.moments,support=c(-Inf,Inf),basis=c('normal','gamma'),gammapar=NULL,lower.tail=TRUE,log.p=FALSE) {#FOLDUP
 	order.max <- length(raw.moments)
+	basis <- match.arg(basis)
 
 	# 2FIX: would it not be better to pass lower.tail to pnorm and dnorm below?
 	# or subtract 1 from the end result?
