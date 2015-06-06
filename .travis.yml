@@ -1,4 +1,6 @@
 
+sudo: false
+
 language: r
 
 r_packages :
