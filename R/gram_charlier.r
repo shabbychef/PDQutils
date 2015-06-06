@@ -75,8 +75,6 @@ require(moments)
 #'  as \eqn{\mbox{log}(p)}{log(p)}.
 #' @param lower.tail whether to compute the lower tail. If false, we approximate the survival function.
 #' @return The approximate density at \code{x}, or the approximate CDF at
-#' \code{q}.
-#'
 #' @keywords distribution 
 #' @seealso \code{\link{qapx_cf}}
 #' @export 
@@ -90,64 +88,106 @@ require(moments)
 #' @examples 
 #' # normal distribution:
 #' xvals <- seq(-2,2,length.out=501)
-#' d1 <- dapx_gca(xvals, c(0,1,0,3,0))
+#' d1 <- dapx_gca(xvals, c(0,1,0,3,0), basis='normal')
 #' d2 <- dnorm(xvals)
+#' # they should match:
 #' d1 - d2
 #'
 #' qvals <- seq(-2,2,length.out=501)
 #' p1 <- papx_gca(qvals, c(0,1,0,3,0))
 #' p2 <- pnorm(qvals)
 #' p1 - p2
+#'
+#' # for a one-sided distribution, like the chi-square
+#' chidf <- 10
+#' ords <- seq(1,9)
+#' raw.moments <- exp(ords * log(2) + lgamma((chidf/2) + ords) - lgamma(chidf/2))
+#' xvals <- seq(0.3,10,length.out=501)
+#' d1g <- dapx_gca(xvals, moments, support=c(0,Inf), basis='gamma')
+#' d2 <- dchisq(xvals,df=chidf)
+#' \dontrun{
+#' 	plot(xvals,d1g)
+#' 	lines(xvals,d2,col='red')
+#' }
+#'
+#' # for a one-sided distribution, like the log-normal
+#' mu <- 2
+#' sigma <- 1
+#' ords <- seq(1,8)
+#' moments <- exp(ords * mu + 0.5 * (sigma*ords)^2)
+#' xvals <- seq(0.5,10,length.out=501)
+#' d1g <- dapx_gca(xvals, moments, support=c(0,Inf), basis='gamma')
+#' d2 <- dnorm(log(xvals),mean=mu,sd=sigma) / xvals
+#' \dontrun{
+#' 	plot(xvals,d1g)
+#' 	lines(xvals,d2,col='red')
+#' }
 #' @template etc
 dapx_gca <- function(x,raw.moments,support=c(-Inf,Inf),basis=c('normal','gamma'),gammapar=NULL,log=FALSE) {#FOLDUP
 	order.max <- length(raw.moments)
-	basis <- match.arg(basis)
+	basis <- tolower(match.arg(basis))
 
 	# standardize the distribution 
 	mu.central <- moments::raw2central(c(1,raw.moments))
 	mu.std <- central2std(mu.central)
-
-	# mean and standard deviation
-	mu <- raw.moments[1]
 	sigma <- sqrt(mu.central[3])
 
+	orders <- seq(0,order.max)
+
+	#	2FIX: break this out into it's own sub function
 	if (basis == 'normal') {
+		# mean and standard deviation
+		mu <- raw.moments[1]
+
 		# the studentized variable:
 		eta <- (x - mu) / sigma
+		# the new moments are the centered, rescaled ones:
+		new.moments <- mu.std
+		# must scale pdf when done, by multiplying by this:
+		scalby <- 1/sigma
+
+		# the orthogonal polynomials
 		hermi <- orthopolynom::hermite.he.polynomials(order.max+1, normalized=FALSE)
+		# make them ortho_normal_
+		delterm <- sqrt(factorial(orders))
 
-		retval <- dnorm(eta)
-		phi.eta <- retval
-		for (iii in c(1:order.max)) {
-			ci <- (sum(coef(hermi[[iii+1]]) * mu.std[1:(iii+1)])) / factorial(iii)
-			retval <- retval + ci * phi.eta * as.function(hermi[[iii+1]])(eta)
-		}
-
-		# adjust back from standardized
-		retval <- retval / sigma
+		# the orthonormal polynomials and their weight function:
+		polys <- lapply(orders,function(idx) { hermi[[idx+1]] / delterm[idx+1] })
+		wt <- dnorm
 	} else if (basis == 'gamma') {
 		gammapar <- .guess_par(raw.moments,gammapar)
-
-		# the studentized variable, for a chi-square
-		scalby <- 1/gammapar$scale
+		# match the variance by rescaling x
+		#scalby <- sqrt(gammapar$shape) * gammapar$scale / sigma
+		scalby <- sqrt(gammapar$shape) / sigma
 		eta <- x * scalby
+		# the new moments are simply the rescaled ones
+		new.moments <- c(1,raw.moments) * (scalby^orders)
 
+		# the orthogonal polynomials
 		alpha <- gammapar$shape - 1
 		glag <- orthopolynom::glaguerre.polynomials(order.max+1, alpha, normalized=FALSE)
+		# make them ortho_normal_
+		logdelterm <- lgamma(alpha + 1 + orders) - lgamma(alpha+1) - lfactorial(orders)
+		delterm <- exp(0.5 * logdelterm)
 
-		retval <- dgamma(eta,shape=gammapar$shape,scale=1)
-		phi.eta <- retval
-		for (iii in c(1:order.max)) {
-# 2FIX: the weighting all bad...
-			ci <- (sum(coef(glag[[iii+1]]) * mu.std[1:(iii+1)])) / factorial(iii)
-			retval <- retval + ci * phi.eta * as.function(glag[[iii+1]])(x)
-		}
-
-		# adjust back from standardized
-		retval <- retval * scalby
+		# the orthonormal polynomials and their weight function:
+		polys <- lapply(orders,function(idx) { glag[[idx+1]] / (delterm[idx+1]) })
+		wt <- function(z) { dgamma(z,shape=gammapar$shape,scale=1) }
+	} else if (basis == 'beta') {
+		# Jacobi polynomials
+		stop('NYI')
 	} else {
-		stop('unknown basis')
+		stop(paste('badCode: distribution',basis,'unknown'))
 	}
+
+	retval <- wt(eta)
+	phi.eta <- retval
+	for (iii in c(1:order.max)) {
+		ci <- (sum(coef(polys[[iii+1]]) * new.moments[1:(iii+1)])) 
+		retval <- retval + ci * phi.eta * as.function(polys[[iii+1]])(eta)
+	}
+	# adjust back from standardized
+	retval <- retval * scalby
 
 	# sanity check; shall I throw a warning?
 	retval <- pmax(0,retval)
@@ -166,7 +206,8 @@ dapx_gca <- function(x,raw.moments,support=c(-Inf,Inf),basis=c('normal','gamma')
 	return(retval)
 }#UNFOLD
 #' @export 
-papx_gca <- function(q,raw.moments,support=c(-Inf,Inf),basis=c('normal','gamma'),gammapar=NULL,lower.tail=TRUE,log.p=FALSE) {#FOLDUP
+papx_gca <- function(q,raw.moments,support=c(-Inf,Inf),basis=c('normal','gamma'),gammapar=NULL,
+										 lower.tail=TRUE,log.p=FALSE) {#FOLDUP
 	order.max <- length(raw.moments)
 	basis <- match.arg(basis)
 
