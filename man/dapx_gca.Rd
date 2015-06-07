@@ -5,9 +5,9 @@
 \alias{papx_gca}
 \title{Approximate density and distribution via Gram-Charlier A expansion.}
 \usage{
-dapx_gca(x, raw.moments, support=c(-Inf,Inf), log=FALSE)
+dapx_gca(x, raw.moments, support=c(-Inf,Inf), basis=c('normal','gamma'), gammapar=NULL, log=FALSE)
 
-papx_gca(q, raw.moments, support=c(-Inf,Inf), lower.tail=TRUE, log.p=FALSE)
+papx_gca(q, raw.moments, support=c(-Inf,Inf), basis=c('normal','gamma'), gammapar=NULL, lower.tail=TRUE, log.p=FALSE)
 }
 \arguments{
 \item{x}{where to evaluate the approximate density.}
@@ -17,6 +17,16 @@ of the probability distribution.}
 
 \item{support}{the support of the density function. It is assumed
 that the density is zero on the complement of this open interval.}
+
+\item{basis}{the basis under which to perform the approximation. \code{'normal'}
+gives the classical expansion around the PDF and CDF of the normal
+distribution via Hermite polynomials. \code{'gamma'} expands around a
+gamma distribution with parameters \code{gammapar$shape} and
+\code{gammapar$scale}.}
+
+\item{gammapar}{the parameters for the gamma distribution approximation. Only
+used under the gamma basis. If \code{NULL}, the shape and rate are inferred
+from the first two moments.}
 
 \item{log}{logical; if TRUE, densities \eqn{f} are given
 as \eqn{\mbox{log}(f)}{log(f)}.}
@@ -30,7 +40,6 @@ as \eqn{\mbox{log}(p)}{log(p)}.}
 }
 \value{
 The approximate density at \code{x}, or the approximate CDF at
-\code{q}.
 }
 \description{
 Approximate the probability density or cumulative distribution function of a distribution via its raw moments.
@@ -75,14 +84,40 @@ Monotonicity of the CDF is not guaranteed.
 \examples{
 # normal distribution:
 xvals <- seq(-2,2,length.out=501)
-d1 <- dapx_gca(xvals, c(0,1,0,3,0))
+d1 <- dapx_gca(xvals, c(0,1,0,3,0), basis='normal')
 d2 <- dnorm(xvals)
+# they should match:
 d1 - d2
 
 qvals <- seq(-2,2,length.out=501)
 p1 <- papx_gca(qvals, c(0,1,0,3,0))
 p2 <- pnorm(qvals)
 p1 - p2
+
+# for a one-sided distribution, like the chi-square
+chidf <- 10
+ords <- seq(1,9)
+raw.moments <- exp(ords * log(2) + lgamma((chidf/2) + ords) - lgamma(chidf/2))
+xvals <- seq(0.3,10,length.out=501)
+d1g <- dapx_gca(xvals, moments, support=c(0,Inf), basis='gamma')
+d2 <- dchisq(xvals,df=chidf)
+\dontrun{
+	plot(xvals,d1g)
+	lines(xvals,d2,col='red')
+}
+
+# for a one-sided distribution, like the log-normal
+mu <- 2
+sigma <- 1
+ords <- seq(1,8)
+moments <- exp(ords * mu + 0.5 * (sigma*ords)^2)
+xvals <- seq(0.5,10,length.out=501)
+d1g <- dapx_gca(xvals, moments, support=c(0,Inf), basis='gamma')
+d2 <- dnorm(log(xvals),mean=mu,sd=sigma) / xvals
+\dontrun{
+	plot(xvals,d1g)
+	lines(xvals,d2,col='red')
+}
 }
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}
