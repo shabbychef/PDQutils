@@ -339,9 +339,14 @@ lseq <- function(from,to,length.out) {
 \providecommand{\wt}[1]{\funcit{w}{#1}}
 \providecommand{\fpi}[2][n]{\funcit{p_{#1}}{#2}}
 \providecommand{\fexp}[1]{\operatorname{exp}\wrapit{#1}}
+
 \providecommand{\He}[2][i]{\funcit{He_{#1}}{#2}}
 \providecommand{\glag}[3]{\funcit{L^{\wrapit{#1}}_{#2}}{#3}}
 \providecommand{\jacb}[3]{\funcit{P^{\wrapit{#1}}_{#2}}{#3}}
+\providecommand{\legn}[2]{\funcit{P_{#1}}{#2}}
+\providecommand{\chebo}[2]{\funcit{T_{#1}}{#2}}
+\providecommand{\chebt}[2]{\funcit{U_{#1}}{#2}}
+
 \providecommand{\Gam}[1]{\funcit{\Gamma}{#1}}
 \providecommand{\Bet}[1]{\funcit{B}{#1}}
 \providecommand{\dx}[1][x]{\mathrm{d}#1}
@@ -384,7 +389,8 @@ with respect to this weighting function. That is
 \int_{-\infty}^{\infty} \wt{x} \fpi[n]{x} \fpi[m]{x} \dx = 
 \kdel{n,m}\knn{n},
 \end{equation}
-where $\kdel{m,n}$ is the Kronecker delta.  We furthermore suppose that the
+where $\kdel{m,n}$ is the Kronecker delta, equal to one only when $m=n$,
+otherwise equal to zero.  We furthermore suppose that the
 polynomials $\fpi{x}$ are complete: any reasonably smooth function can be
 represented as a linear combination of these polynomials. 
 
@@ -398,7 +404,7 @@ multiplying both sides by $\fpi[m]{x}$ and integrating:
 \begin{equation}
 \int_{-\infty}^{\infty} \fpi[m]{x} \dens{x} \dx 
 = \sum_{n=0}^{\infty} c_n \int_{-\infty}^{\infty} \fpi[m]{x} \fpi[n]{x} \wt{x} \dx
-= \sum_{n=0}^{\infty} c_n \kdel{n,m}\knn{n}
+%= \sum_{n=0}^{\infty} c_n \kdel{n,m}\knn{n}
 = c_m \knn{m}.
 \end{equation}
 Thus
@@ -418,52 +424,63 @@ as
 To approximately compute the cumulative distribution function, one can compute
 the integral of the approximate density.  The approximation is
 \begin{equation}
-\cdf{x} \approx \sum_{n=0}^{m} \int_{-\infty}{x} \fpi[n]{y} \wt{y}\dx[y] 
+\cdf{x} \approx \sum_{n=0}^{m} \int_{-\infty}^{\infty} \fpi[n]{y} \wt{y}\dx[y] 
 \brakit{\frac{1}{\knn{n}} \int_{-\infty}^{\infty} \fpi[n]{z} \dens{z} \dx[z]}.
 \end{equation}
 
 In summary, to approximate the PDF or CDF of a distribution via the Gram
 Charlier series, one must know the moments of the distribution, and be able
 to compute $\wt{x}, \fpi[n]{x}, \knn{n},$ and $\int \fpi[n]{y}\wt{y}\dx[y]$.
-These are tabulated in Table \ref{table:orthopoly}. \cite[22.2]{abramowitz_stegun}
+These are collected in Table \ref{tab:orthopoly} for a few different families
+of probability distributions. \cite[22.2]{abramowitz_stegun} The 
+traditional Gram Charlier `A' series corresponds to case where $\wt{x}$ is the
+PDF of the standard normal distribution and $\fpi[n]{x}$ is the (probabilist's)
+Hermite polynomial. Also of interest are the cases where $\wt{x}$ is PDF of
+the gamma distribution (including Chi-squares), in which case $\fpi[n]{x}$ are
+the generalized Laguerre polynomials; the case where $\wt{x}$ is the PDF of
+the (shifted) Beta distribution, and $\fpi[n]{x}$ are the Jacobi polynomials.
+As special cases of the Beta distribution, 
+one also has the Arcsine distribution (with Chebyshev polynomials of the first kind), 
+the Wigner distribution (Chebyshev of the second kind), 
+and the uniform distribution (Legendre polynomials). \cite{samuelson1943,abramowitz_stegun}
 
-Suppose $f(x)$ is the probability density of some random
-variable, and let $F(x)$ be the cumulative distribution function.
-Let $He_j(x)$ be the $j$th probabilist's Hermite
-polynomial.  These polynomials form an orthogonal basis, with respect to the
-function $w(x) = e^{-x^2/2} = \sqrt{2\pi}\phi(x)$, of the Hilbert space of 
-functions which are square integrable with $w$-weighting. \cite[22.2.15]{abramowitz_stegun}
-The orthogonality relationship is
-$$
-\int_{-\infty}^{\infty} He_i(x) He_j(x) w(x) \mathrm{d}x = \sqrt{2\pi} j!
-\delta_{ij},
-$$
-where $\delta_{ij}$ is the Kronecker delta.
+%Suppose $f(x)$ is the probability density of some random
+%variable, and let $F(x)$ be the cumulative distribution function.
+%Let $He_j(x)$ be the $j$th probabilist's Hermite
+%polynomial.  These polynomials form an orthogonal basis, with respect to the
+%function $w(x) = e^{-x^2/2} = \sqrt{2\pi}\phi(x)$, of the Hilbert space of 
+%functions which are square integrable with $w$-weighting. \cite[22.2.15]{abramowitz_stegun}
+%The orthogonality relationship is
+%$$
+%\int_{-\infty}^{\infty} He_i(x) He_j(x) w(x) \mathrm{d}x = \sqrt{2\pi} j!
+%\delta_{ij},
+%$$
+%where $\delta_{ij}$ is the Kronecker delta.
 
-Expanding the density $f(x)$ in terms of these polynomials in the
-usual way (abusing orthogonality) one has
-$$
-f(x) = \sum_{0\le j} \frac{He_j(x)}{j!} \phi(x) \int_{-\infty}^{\infty} f(z) He_j(z) \mathrm{d}z.
-$$
-The cumulative distribution function is 'simply' the integral of this
-expansion. Abusing certain facts regarding the PDF and CDF of the normal
-distribution and the probabilist's Hermite polynomials, the CDF has
-the representation
-$$
-F(x) = \Phi(x) - \sum_{1\le j} \frac{He_{j-1}(x)}{j!} \phi(x) \int_{-\infty}^{\infty} f(z) He_j(z) \mathrm{d}z.
-$$
+%Expanding the density $f(x)$ in terms of these polynomials in the
+%usual way (abusing orthogonality) one has
+%$$
+%f(x) = \sum_{0\le j} \frac{He_j(x)}{j!} \phi(x) \int_{-\infty}^{\infty} f(z) He_j(z) \mathrm{d}z.
+%$$
+%The cumulative distribution function is 'simply' the integral of this
+%expansion. Abusing certain facts regarding the PDF and CDF of the normal
+%distribution and the probabilist's Hermite polynomials, the CDF has
+%the representation
+%$$
+%F(x) = \Phi(x) - \sum_{1\le j} \frac{He_{j-1}(x)}{j!} \phi(x) \int_{-\infty}^{\infty} f(z) He_j(z) \mathrm{d}z.
+%$$
 
-These series contain coefficients defined by the probability distribution 
-under consideration. They take the form
-$$
-c_j = \frac{1}{j!}\int_{-\infty}^{\infty} f(z) He_j(z) \mathrm{d}z.
-$$
-Using linearity of the integral, these coefficients are easily computed in
-terms of the coefficients of the Hermite polynomials and the raw, uncentered
-moments of the probability distribution under consideration. Note that it may be the
-case that the computation of these coefficients suffers from bad numerical
-cancellation for some distributions, and that an alternative formulation
-may be more numerically robust.
+%These series contain coefficients defined by the probability distribution 
+%under consideration. They take the form
+%$$
+%c_j = \frac{1}{j!}\int_{-\infty}^{\infty} f(z) He_j(z) \mathrm{d}z.
+%$$
+%Using linearity of the integral, these coefficients are easily computed in
+%terms of the coefficients of the Hermite polynomials and the raw, uncentered
+%moments of the probability distribution under consideration. Note that it may be the
+%case that the computation of these coefficients suffers from bad numerical
+%cancellation for some distributions, and that an alternative formulation
+%may be more numerically robust.
 
 %\begin{sidewaystable}[h]
 %\centering
@@ -476,7 +493,7 @@ may be more numerically robust.
 %$-\frac{1}{\sqrt{2\pi}}\fexp{-\frac{y^2}{2}} \He[n-1]{y}$ \\
 %\hline
 %Gamma & $\coint{0,\infty}$ & $\frac{1}{\Gam{a+1}} x^{a} \fexp{-x}$ &
-%(Generalized Laguerre) $\glag{a}{n}{x}$ & 
+%(generalized Laguerre) $\glag{a}{n}{x}$ & 
 %$\frac{\Gam{n+a+1}}{\Gam{a+1}n!}$ & 
 %$\wrapit{\frac{a+1}{n}} \wrapit{\frac{y^{a+1}\fexp{-y}}{\Gam{a+2}}} \glag{a+1}{n-1}{y}$.\\
 %\hline
@@ -494,7 +511,7 @@ may be more numerically robust.
 %
 %
 
-\begin{table}[h]
+\begin{table}[htb]
 \centering
 \begin{tabular}[b]{|r|*{2}{c|}}
 \hline
@@ -503,11 +520,16 @@ class & support & $\wt{x}$ \\
 Normal/Hermite & $\ooint{-\infty,\infty}$ &
 $\dnorm{x} = \frac{1}{\sqrt{2\pi}}\fexp{-\frac{x^2}{2}}$ \\
 \hline
-Gamma/Generalized Laguerre & $\coint{0,\infty}$ & $\funcit{g_{a+1}}{x} = \frac{1}{\Gam{a+1}} x^{a}
+Gamma/generalized Laguerre & $\coint{0,\infty}$ & $\funcit{g_{a+1}}{x} = \frac{1}{\Gam{a+1}} x^{a}
 \fexp{-x}$ \\
 \hline
-Beta/Jacobi& $\ccint{-1,1}$ & $\funcit{f_{a+1,b+1}}{x} = \frac{1}{\Bet{a+1,b+1}2^{a+b+1}}
-\wrapit{1-x}^a \wrapit{1+x}^b$ \\
+Beta/Jacobi& $\ooint{-1,1}$ & $\funcit{f_{a+1,b+1}}{x} = \frac{\wrapit{1-x}^a \wrapit{1+x}^b}{\Bet{a+1,b+1}2^{a+b+1}}$ \\
+\hline
+Arcsine/Chebyshev I & $\ooint{-1,1}$ & $\frac{1}{\pi \sqrt{1-x^2}}$ \\
+\hline
+Wigner/Chebyshev II & $\ccint{-1,1}$ & $\frac{2}{\pi} \sqrt{1-x^2}$ \\
+\hline
+Uniform/Legendre & $\ccint{-1,1}$ & $\frac{1}{2}$ \\
 \hline
 \end{tabular}
 
@@ -524,6 +546,12 @@ Beta & $\jacb{a,b}{n}{x}$ &
 $\frac{1}{2n+a+b+1} \frac{1}{\Bet{a+1,b+1}}\frac{\Gam{n+a+1}\Gam{n+b+1}}{n!
 \Gam{n+a+b+1}}$ \\
 \hline
+Arcsine & $\chebo{n}{x}$ & $\frac{1 + \kdel{0,n}}{2}$ \\
+\hline
+Wigner & $\chebt{n}{x}$ & $1$ \\
+\hline
+Uniform & $\legn{n}{x}$ & $\frac{1}{2n+1}$ \\
+\hline
 \end{tabular}
 
 \begin{tabular}[b]{|r|*{1}{c|}}
@@ -537,42 +565,91 @@ Gamma &
 $\wrapit{\frac{a+1}{n}} \funcit{g_{a+2}}{y} \glag{a+1}{n-1}{y}$.\\
 \hline
 Beta & 
-$\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{a+2,b+2}}{\Bet{a+1}{b+1}}}
+$\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{a+2,b+2}}{\Bet{a+1,b+1}}}
 \funcit{f_{a+2,b+2}}{y}\jacb{a+1,b+1}{n-1}{y}$.\\
 %$\wrapit{\frac{-2}{n}}\wrapit{\frac{\wrapit{a+1}\wrapit{b+1}}{\wrapit{a+b+2}\wrapit{a+b+3}}}
 %\frac{1}{\Bet{a+2,b+2}2^{a+b+3}}\wrapit{1-y}^{a+1}\wrapit{1+y}^{b+1}\jacb{a+1,b+1}{n-1}{y}$.\\
 \hline
+Arcsine & 
+$\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{3/2,3/2}}{\Bet{1/2,1/2}}}
+\funcit{f_{3/2,3/2}}{y}\jacb{1/2,1/2}{n-1}{y}$.\\
+\hline
+Wigner & 
+$\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{5/2,5/2}}{\Bet{3/2,3/2}}}
+\funcit{f_{5/2,5/2}}{y}\jacb{3/2,3/2}{n-1}{y}$.\\
+\hline
+Uniform & 
+$\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{2,2}}{\Bet{1,1}}}
+\funcit{f_{2,2}}{y}\jacb{1,1}{n-1}{y}$.\\
+\hline
 \end{tabular}
 
-\label{table:orthopoly_I}
-\caption{orthogonal polynomials blah blah blah.}
+\label{tab:orthopoly}
+\caption{Different classes of orthogonal polynomials are presented. In each
+case the weight function, $\wt{x}$ is the PDF of a common distribution, while
+the orthogonal polynomials come from a well known family. The constant
+$\knn{n}$ is the normalizing constant. The last table gives the integral of
+the polynomial times the weighting function, a value which is needed for
+approximating the CDF. Values are given for: the normal PDF, with probabilist's
+Hermite polynomials; the Gamma PDF, with generalized Laguerre polynomials; the
+Beta PDF with Jacobi polynomials. As special cases of the latter, one has the
+Arcsine, Wigner, and Uniform distributions, with Chebyshev and Legendre
+polynomials.}
 \end{table}
 
-%\begin{table}[h]
+%\begin{sidewaystable}[h]
 %\centering
-%\begin{tabular}[b]{|*{6}{c|}}
+%\begin{tabular}[b]{|r|*{5}{c|}}
 %\hline
-%class & support & $\wt{x}$ & $\fpi[n]{x}$ & $\knn{n}$ & $\int \fpi[n]{y}\wt{y}\dx[y]$ \\
+%class & support & $\wt{x}$ 
+%& $\fpi[n]{x}$ & $\knn{n}$ 
+%& $\int \fpi[n]{y}\wt{y}\dx[y]$ \\
 %\hline
-%Normal & $\ooint{-\infty,\infty}$ &
-%$\frac{1}{\sqrt{2\pi}}\fexp{-\frac{x^2}{2}}$ & (Hermite) $\He[n]{x}$ & $n!$ &
-%$-\frac{1}{\sqrt{2\pi}}\fexp{-\frac{y^2}{2}} \He[n-1]{y}$ \\
+%Normal/Hermite & $\ooint{-\infty,\infty}$ &
+%$\dnorm{x} = \frac{1}{\sqrt{2\pi}}\fexp{-\frac{x^2}{2}}$ 
+%& $\He[n]{x}$ & $n!$ 
+%& $-\dnorm{y} \He[n-1]{y}$ \\
 %\hline
-%Gamma & $\coint{0,\infty}$ & $\frac{1}{\Gam{a+1}} x^{a} \fexp{-x}$ &
-%(Generalized Laguerre) $\glag{a}{n}{x}$ & 
-%$\frac{\Gam{n+a+1}}{\Gam{a+1}n!}$ & 
-%$\wrapit{\frac{a+1}{n}} \wrapit{\frac{y^{a+1}\fexp{-y}}{\Gam{a+2}}} \glag{a+1}{n-1}{y}$.\\
+%Gamma/generalized Laguerre & $\coint{0,\infty}$ & $\funcit{g_{a+1}}{x} = \frac{1}{\Gam{a+1}} x^{a}
+%\fexp{-x}$ 
+%& $\glag{a}{n}{x}$ & $\frac{\Gam{n+a+1}}{\Gam{a+1}n!}$ 
+%& $\wrapit{\frac{a+1}{n}} \funcit{g_{a+2}}{y} \glag{a+1}{n-1}{y}$.\\
 %\hline
-%Beta & $\ccint{-1,1}$ & $\frac{1}{\Bet{a,b}2^{a+b-1}} \wrapit{1-x}^a \wrapit{1+x}^b$ &
-%(Jacobi) $\jacb{a,b}{n}{x}$ & 
-%$\frac{1}{2n+a+b+1} \frac{\Gam{a+b+2}}{\Gam{a+1}\Gam{b+1}}\frac{\Gam{n+a+1}\Gam{n+b+1}}{n! \Gam{n+a+b+1}}$ &
-%$\wrapit{\frac{-2}{n}}\wrapit{\frac{\wrapit{a+1}\wrapit{b+1}}{\wrapit{a+b+2}\wrapit{a+b+3}}}
-%\frac{1}{\Bet{a+2,b+2}2^{a+b+3}}\wrapit{1-y}^{a+1}\wrapit{1+y}^{b+1}\jacb{a+1,b+1}{n-1}{y}$.\\
+%Beta/Jacobi& $\ooint{-1,1}$ & $\funcit{f_{a+1,b+1}}{x} = \frac{\wrapit{1-x}^a \wrapit{1+x}^b}{\Bet{a+1,b+1}2^{a+b+1}}$ 
+%& $\jacb{a,b}{n}{x}$ & $\frac{1}{2n+a+b+1} \frac{1}{\Bet{a+1,b+1}}\frac{\Gam{n+a+1}\Gam{n+b+1}}{n!  \Gam{n+a+b+1}}$
+%& $\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{a+2,b+2}}{\Bet{a+1,b+1}}}
+%\funcit{f_{a+2,b+2}}{y}\jacb{a+1,b+1}{n-1}{y}$.\\
+%\hline
+%Arcsine/Chebyshev I & $\ooint{-1,1}$ & $\frac{1}{\pi \sqrt{1-x^2}}$ 
+%& $\chebo{n}{x}$ & $\frac{1 + \kdel{0,n}}{2}$ 
+%& $\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{3/2,3/2}}{\Bet{1/2,1/2}}}
+%\funcit{f_{3/2,3/2}}{y}\jacb{1/2,1/2}{n-1}{y}$.\\
+%\hline
+%Wigner/Chebyshev II & $\ccint{-1,1}$ & $\frac{2}{\pi} \sqrt{1-x^2}$ 
+%& $\chebt{n}{x}$ & $1$ 
+%& $\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{5/2,5/2}}{\Bet{3/2,3/2}}}
+%\funcit{f_{5/2,5/2}}{y}\jacb{3/2,3/2}{n-1}{y}$.\\
+%\hline
+%Uniform/Legendre & $\ccint{-1,1}$ & $\frac{1}{2}$ 
+%& $\legn{n}{x}$ & $\frac{1}{2n+1}$ 
+%& $\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{2,2}}{\Bet{1,1}}}
+%\funcit{f_{2,2}}{y}\jacb{1,1}{n-1}{y}$.\\
 %\hline
 %\end{tabular}
-%\label{table:orthopoly}
-%\caption{blah blah blah.}
-%\end{table}
+
+%\label{tab:orthopoly_II}
+%\caption{Different classes of orthogonal polynomials are presented. In each
+%case the weight function, $\wt{x}$ is the PDF of a common distribution, while
+%the orthogonal polynomials come from a well known family. The constant
+%$\knn{n}$ is the normalizing constant. The last table gives the integral of
+%the polynomial times the weighting function, a value which is needed for
+%approximating the CDF. Values are given for: the normal PDF, with probabilist's
+%Hermite polynomials; the Gamma PDF, with generalized Laguerre polynomials; the
+%Beta PDF with Jacobi polynomials. As special cases of the latter, one has the
+%Arcsine, Wigner, and Uniform distributions, with Chebyshev and Legendre
+%polynomials.}
+%\end{sidewaystable}
+
 
 %UNFOLD
 
