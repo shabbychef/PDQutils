@@ -5,9 +5,11 @@
 \alias{papx_gca}
 \title{Approximate density and distribution via Gram-Charlier A expansion.}
 \usage{
-dapx_gca(x, raw.moments, support=NULL, basis=c('normal','gamma','beta','arcsine','wigner','uniform'), basepar=NULL, log=FALSE)
+dapx_gca(x, raw.moments, support=NULL, basis=c('normal','gamma','beta','arcsine','wigner','uniform'),
+ basepar=NULL, log=FALSE)
 
-papx_gca(q, raw.moments, support=NULL, basis=c('normal','gamma','beta','arcsine','wigner','uniform'), basepar=NULL, lower.tail=TRUE, log.p=FALSE)
+papx_gca(q, raw.moments, support=NULL, basis=c('normal','gamma','beta','arcsine','wigner','uniform'),
+ basepar=NULL, lower.tail=TRUE, log.p=FALSE)
 }
 \arguments{
 \item{x}{where to evaluate the approximate density.}
