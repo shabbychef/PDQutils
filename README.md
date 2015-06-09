@@ -10,26 +10,21 @@ PDQ Functions via Gram Charlier, Edgeworth, and Cornish Fisher Approximations
 
 ## Installation
 
-The best way to get the stable release is via CRAN:
+This package may be installed from CRAN; the latest version may be
+found on [github](https://www.github.com/shabbychef/PDQutils "PDQutils")
+via devtools, or installed via [drat](https://github.com/eddelbuettel/drat "drat"):
+
+
 ```r
-# stable:
-install.packages("PDQutils")
-```
-If you need access to the latest release (typically this is not much newer
-than the CRAN package), use drat:
-```r
-# dev:
-library(drat)
-drat:::add("shabbychef")
-install.packages("PDQutils")
-```
-The package may also be built from the 
-[github](https://www.github.com/shabbychef/PDQutils "PDQutils") source via
-devtools:
-```r
-# use the source, Luke:
-library(devtools)
-install_github("shabbychef/PDQutils")
+if (require(devtools)) {
+    # latest greatest
+    install_github("shabbychef/PDQutils")
+}
+# via drat:
+if (require(drat)) {
+    drat:::add("shabbychef")
+    install.packages("PDQutils")
+}
 ```
 
 # Basic Usage
