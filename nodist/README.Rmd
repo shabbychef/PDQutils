@@ -166,7 +166,7 @@ psnak_2 <- function(q,dfs,ord.max=10,...) {
 
 The q-q plot looks better now:
 
-```{r improvedqq,eval=TRUE,echo=TRUE,cache=FALSE,dpi=200,out.width='600px',out.height='500px'}
+```{r improvedqq,eval=TRUE,echo=TRUE,cache=TRUE,dpi=450,out.width='600px',out.height='500px'}
 
 qqplot(qsnak(ppoints(n.samp),dfs=dfs),rvs,
 	main='Q-Q against qsnak (C-F appx.)')
@@ -179,7 +179,7 @@ Note that the q-q plot uses the approximate quantile function, qsnak. If we comp
 approximate CDF of the random draws, we hope it will be nearly uniform, and indeed
 it is:
 
-```{r snakuni,eval=TRUE,echo=TRUE,cache=FALSE,dpi=200,out.width='600px',out.height='500px'}
+```{r snakuni,eval=TRUE,echo=TRUE,cache=TRUE,dpi=450,out.width='600px',out.height='500px'}
 
 apx.p <- psnak(rvs,dfs=dfs)
 if (require(ggplot2)) {

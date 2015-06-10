@@ -77,7 +77,7 @@ opts_chunk$set(cache=TRUE,cache.path="cache/PDQutils")
 
 #opts_chunk$set(fig.path="figure/",dev=c("pdf","cairo_ps"))
 opts_chunk$set(fig.path="figure/PDQutils",dev=c("pdf"))
-opts_chunk$set(fig.width=4.5,fig.height=4,dpi=300)
+opts_chunk$set(fig.width="4in",fig.height="4in",fig.width=8,fig.height=8,dpi=450)
 
 # doing this means that png files are made of figures;
 # the savings is small, and it looks like shit:
@@ -736,8 +736,17 @@ dfs <- c(8,15,4000,10000)
 set.seed(18181)
 # now draw from the distribution 
 rvs <- rsnak(n.samp,dfs)
-qqnorm(rvs)
-qqline(rvs,col='red')
+data <- data.frame(draws=rvs)
+
+library(ggplot2)
+mu <- mean(rvs)
+sigma <- sd(rvs)
+ph <- ggplot(data, aes(sample = draws)) + stat_qq(dist=function(p) { qnorm(p,mean=mu,sd=sigma) }) +
+		geom_abline(slope=1,intercept=0,colour='red') + 
+		theme(text=element_text(size=8)) + 
+		labs(title="Q-Q plot (against normality)")
+
+print(ph)
 @
 
 Using the additivity
@@ -816,10 +825,13 @@ shown in \figref{improvedqq}.
 
 <<'improvedqq',eval=TRUE,echo=TRUE,fig.width=4.5,fig.height=4,fig.scap=NA,fig.cap=paste0("A q-q plot of ",n.samp," draws from a sum of Nakagamis distribution is shown against quantiles from the `qsnak' function.")>>=
 
-qqplot(qsnak(ppoints(n.samp),dfs=dfs),rvs,
-	main='Q-Q against qsnak (C-F appx.)')
-qqline(rvs, distribution=function(p) qsnak(p,dfs),
-	col='red')
+data <- data.frame(draws=rvs)
+library(ggplot2)
+ph <- ggplot(data, aes(sample = draws)) + stat_qq(dist=function(p) { qsnak(p,dfs=dfs) }) +
+		geom_abline(slope=1,intercept=0,colour='red') + 
+		theme(text=element_text(size=8)) + 
+		labs(title="Q-Q against qsnak (C-F appx.)")
+print(ph)
 
 @
 
