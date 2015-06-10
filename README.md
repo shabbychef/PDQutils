@@ -3,6 +3,7 @@
 # PDQutils
 
 [![Build Status](https://travis-ci.org/shabbychef/PDQutils.png)](https://travis-ci.org/shabbychef/PDQutils)
+[![codecov.io](http://codecov.io/github/shabbychef/PDQutils/coverage.svg?branch=master)](http://codecov.io/github/shabbychef/PDQutils?branch=master)
 
 PDQ Functions via Gram Charlier, Edgeworth, and Cornish Fisher Approximations
 
@@ -10,20 +11,24 @@ PDQ Functions via Gram Charlier, Edgeworth, and Cornish Fisher Approximations
 
 ## Installation
 
-This package may be installed from CRAN; the latest version may be
-found on [github](https://www.github.com/shabbychef/PDQutils "PDQutils")
-via devtools, or installed via [drat](https://github.com/eddelbuettel/drat "drat"):
+This package may be installed from CRAN; the latest development version may be
+installed via [drat](https://github.com/eddelbuettel/drat "drat"), or built from
+[github](https://www.github.com/shabbychef/PDQutils "PDQutils"):
 
 
 ```r
-if (require(devtools)) {
-    # latest greatest
-    install_github("shabbychef/PDQutils")
-}
-# via drat:
+# install via CRAN:
+install.packages("PDQutils")
+
+# get latest dev release via drat:
 if (require(drat)) {
     drat:::add("shabbychef")
     install.packages("PDQutils")
+}
+
+# get snapshot from github (may be buggy)
+if (require(devtools)) {
+    install_github("shabbychef/PDQutils")
 }
 ```
 

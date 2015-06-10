@@ -156,8 +156,8 @@ papx_edgeworth <- function(q,raw.cumulants,support=c(-Inf,Inf),lower.tail=TRUE,l
 	# or subtract 1 from the end result?
 	if (!lower.tail) {
 		# transform q and the raw cumulants
-		q <- - q;
-		raw.cumulants <- raw.cumulants * (-1^(1:order.max))
+		q <- - q
+		raw.cumulants <- raw.cumulants * ((-1)^(1:order.max))
 	}
 
 	mu <- raw.cumulants[1]

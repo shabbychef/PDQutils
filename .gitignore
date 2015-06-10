@@ -21,6 +21,9 @@ unit_test.log
 # build static/dynamic
 convoluted_build.sh
 
+# codecov
+token
+
 # automagically generated?
 # ah, but these are needed for install_github:
 #NAMESPACE

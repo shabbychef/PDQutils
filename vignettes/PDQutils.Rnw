@@ -442,7 +442,8 @@ the (shifted) Beta distribution, and $\fpi[n]{x}$ are the Jacobi polynomials.
 As special cases of the Beta distribution, 
 one also has the Arcsine distribution (with Chebyshev polynomials of the first kind), 
 the Wigner distribution (Chebyshev of the second kind), 
-and the uniform distribution (Legendre polynomials). \cite{samuelson1943,abramowitz_stegun}
+and the uniform distribution (Legendre polynomials). \cite{abramowitz_stegun}
+\nocite{samuelson1943,santos2007,leon2011}
 
 %Suppose $f(x)$ is the probability density of some random
 %variable, and let $F(x)$ be the cumulative distribution function.
@@ -525,12 +526,12 @@ Gamma/generalized Laguerre & $\coint{0,\infty}$ & $\funcit{g_{a+1}}{x} = \frac{1
 \hline
 Beta/Jacobi& $\ooint{-1,1}$ & $\funcit{f_{a+1,b+1}}{x} = \frac{\wrapit{1-x}^a \wrapit{1+x}^b}{\Bet{a+1,b+1}2^{a+b+1}}$ \\
 \hline
-Arcsine/Chebyshev I & $\ooint{-1,1}$ & $\frac{1}{\pi \sqrt{1-x^2}}$ \\
-\hline
-Wigner/Chebyshev II & $\ccint{-1,1}$ & $\frac{2}{\pi} \sqrt{1-x^2}$ \\
-\hline
-Uniform/Legendre & $\ccint{-1,1}$ & $\frac{1}{2}$ \\
-\hline
+%Arcsine/Chebyshev I & $\ooint{-1,1}$ & $\frac{1}{\pi \sqrt{1-x^2}}$ \\
+%\hline
+%Wigner/Chebyshev II & $\ccint{-1,1}$ & $\frac{2}{\pi} \sqrt{1-x^2}$ \\
+%\hline
+%Uniform/Legendre & $\ccint{-1,1}$ & $\frac{1}{2}$ \\
+%\hline
 \end{tabular}
 
 \begin{tabular}[b]{|r|*{2}{c|}}
@@ -546,12 +547,12 @@ Beta & $\jacb{a,b}{n}{x}$ &
 $\frac{1}{2n+a+b+1} \frac{1}{\Bet{a+1,b+1}}\frac{\Gam{n+a+1}\Gam{n+b+1}}{n!
 \Gam{n+a+b+1}}$ \\
 \hline
-Arcsine & $\chebo{n}{x}$ & $\frac{1 + \kdel{0,n}}{2}$ \\
-\hline
-Wigner & $\chebt{n}{x}$ & $1$ \\
-\hline
-Uniform & $\legn{n}{x}$ & $\frac{1}{2n+1}$ \\
-\hline
+%Arcsine & $\chebo{n}{x}$ & $\frac{1 + \kdel{0,n}}{2}$ \\
+%\hline
+%Wigner & $\chebt{n}{x}$ & $1$ \\
+%\hline
+%Uniform & $\legn{n}{x}$ & $\frac{1}{2n+1}$ \\
+%\hline
 \end{tabular}
 
 \begin{tabular}[b]{|r|*{1}{c|}}
@@ -570,18 +571,18 @@ $\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{a+2,b+2}}{\Bet{a+1,b+1}}}
 %$\wrapit{\frac{-2}{n}}\wrapit{\frac{\wrapit{a+1}\wrapit{b+1}}{\wrapit{a+b+2}\wrapit{a+b+3}}}
 %\frac{1}{\Bet{a+2,b+2}2^{a+b+3}}\wrapit{1-y}^{a+1}\wrapit{1+y}^{b+1}\jacb{a+1,b+1}{n-1}{y}$.\\
 \hline
-Arcsine & 
-$\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{3/2,3/2}}{\Bet{1/2,1/2}}}
-\funcit{f_{3/2,3/2}}{y}\jacb{1/2,1/2}{n-1}{y}$.\\
-\hline
-Wigner & 
-$\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{5/2,5/2}}{\Bet{3/2,3/2}}}
-\funcit{f_{5/2,5/2}}{y}\jacb{3/2,3/2}{n-1}{y}$.\\
-\hline
-Uniform & 
-$\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{2,2}}{\Bet{1,1}}}
-\funcit{f_{2,2}}{y}\jacb{1,1}{n-1}{y}$.\\
-\hline
+%Arcsine & 
+%$\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{3/2,3/2}}{\Bet{1/2,1/2}}}
+%\funcit{f_{3/2,3/2}}{y}\jacb{1/2,1/2}{n-1}{y}$.\\
+%\hline
+%Wigner & 
+%$\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{5/2,5/2}}{\Bet{3/2,3/2}}}
+%\funcit{f_{5/2,5/2}}{y}\jacb{3/2,3/2}{n-1}{y}$.\\
+%\hline
+%Uniform & 
+%$\wrapit{\frac{-2}{n}}\wrapit{\frac{\Bet{2,2}}{\Bet{1,1}}}
+%\funcit{f_{2,2}}{y}\jacb{1,1}{n-1}{y}$.\\
+%\hline
 \end{tabular}
 
 \label{tab:orthopoly}

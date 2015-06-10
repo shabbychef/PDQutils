@@ -59,7 +59,7 @@ require(moments)
 # then
 # integral_0^\inf L_n^(k-1)(x/Θ) L_m^(k-1)(x/Θ) g(x)dx = δ_n,m Γ(n+k) / (Γ(k) n!)
 
-.gca_setup <- function(x,raw.moments,support=NULL, basis=c('normal','gamma','beta','arcsine','wigner','uniform'), basepar=NULL) {
+.gca_setup <- function(x,raw.moments,support=NULL, basis=c('normal','gamma','beta','arcsine','wigner'), basepar=NULL) {
 	basis <- tolower(match.arg(basis))
 	# the zeroth moment
 	raw.moments <- c(1,raw.moments)
@@ -71,8 +71,7 @@ require(moments)
 											"gamma"=c(0,Inf),
 											"beta"=c(0,1),
 											"arcsine"=c(-1,1),
-											"wigner"=c(-1,1),
-											"uniform"=c(0,1))
+											"wigner"=c(-1,1))
 	}#UNFOLD
 	support <- sort(support)
 	# make these special cases of beta:#FOLDUP
@@ -81,9 +80,6 @@ require(moments)
 		basis = 'beta'
 	} else if (basis == 'wigner') {
 		basepar = list(shape1=1.5,shape2=1.5)
-		basis = 'beta'
-	} else if (basis == 'uniform') {
-		basepar = list(shape1=1,shape2=1)
 		basis = 'beta'
 	}#UNFOLD
 	# shift, scale X, modify the moments, compute final scaling factor#FOLDUP
@@ -167,15 +163,16 @@ require(moments)
 												function(idx) { function(y) { ((alpha+1)/idx) * dgamma(y,shape=alpha+2,scale=1) * as.function(ipoly[[idx]])(y) } }) )
 
 	} else if (basis == 'beta') {
-		palpha <- basepar$shape1 - 1
-		pbeta <- basepar$shape2 - 1
-		wt <- function(x) { 0.5 * dbeta(0.5 * (x+1),shape1=palpha+1,shape2=pbeta+1) }
+		palpha <- basepar$shape2 - 1
+		pbeta <- basepar$shape1 - 1
+		wt <- function(x) { 0.5 * dbeta(0.5 * (x+1),shape2=palpha+1,shape1=pbeta+1) }
+	
 		poly <- orthopolynom::jacobi.p.polynomials(order.max, alpha=palpha, beta=pbeta, normalized=FALSE)
 		hn <- exp(lgamma(orders + palpha + 1) + lgamma(orders + pbeta + 1) - lfactorial(orders) - lgamma(orders + palpha + pbeta + 1) - 
 							lbeta(palpha+1,pbeta+1) - log(2*orders+palpha+pbeta+1))
 
 		ipoly <- orthopolynom::jacobi.p.polynomials(order.max-1, alpha=palpha+1, beta=pbeta+1, normalized=FALSE)
-		intpoly <- c(function(y) { as.numeric(poly[[1]]) * pbeta(0.5 * (y+1),shape1=palpha+1,shape2=pbeta+1) },
+		intpoly <- c(function(y) { as.numeric(poly[[1]]) * pbeta(0.5 * (y+1),shape2=palpha+1,shape1=pbeta+1) },
 								 lapply(1:(order.max),
 												function(idx) { function(y) { 
 													(-2/idx) * exp(lbeta(palpha+2,pbeta+2) - lbeta(palpha+1,pbeta+1)) *
@@ -200,10 +197,10 @@ require(moments)
 #'
 #' @usage
 #'
-#' dapx_gca(x, raw.moments, support=NULL, basis=c('normal','gamma','beta','arcsine','wigner','uniform'), 
+#' dapx_gca(x, raw.moments, support=NULL, basis=c('normal','gamma','beta','arcsine','wigner'), 
 #'  basepar=NULL, log=FALSE)
 #'
-#' papx_gca(q, raw.moments, support=NULL, basis=c('normal','gamma','beta','arcsine','wigner','uniform'), 
+#' papx_gca(q, raw.moments, support=NULL, basis=c('normal','gamma','beta','arcsine','wigner'), 
 #'  basepar=NULL, lower.tail=TRUE, log.p=FALSE)
 #'
 #' @param x where to evaluate the approximate density.
@@ -214,7 +211,7 @@ require(moments)
 #' that the density is zero on the complement of this open interval.
 #' This defaults to \code{c(-Inf,Inf)} for the normal basis,
 #' \code{c(0,Inf)} for the gamma basis, and
-#' \code{c(0,1)} for the Beta and uniform, and 
+#' \code{c(0,1)} for the Beta, and 
 #' \code{c(-1,1)} for the arcsine and wigner.
 #' @param basis the basis under which to perform the approximation. \code{'normal'}
 #' gives the classical 'A' series expansion around the PDF and CDF of the normal
@@ -304,7 +301,7 @@ require(moments)
 #' 	lines(xvals,d2,col='red')
 #' }
 #' @template etc
-dapx_gca <- function(x,raw.moments,support=NULL,basis=c('normal','gamma','beta','arcsine','wigner','uniform'),basepar=NULL,
+dapx_gca <- function(x,raw.moments,support=NULL,basis=c('normal','gamma','beta','arcsine','wigner'),basepar=NULL,
 										 log=FALSE) {#FOLDUP
 
 	basis <- tolower(match.arg(basis))
@@ -336,7 +333,7 @@ dapx_gca <- function(x,raw.moments,support=NULL,basis=c('normal','gamma','beta',
 	return(retval)
 }#UNFOLD
 #' @export 
-papx_gca <- function(q,raw.moments,support=NULL,basis=c('normal','gamma','beta','arcsine','wigner','uniform'),basepar=NULL,
+papx_gca <- function(q,raw.moments,support=NULL,basis=c('normal','gamma','beta','arcsine','wigner'),basepar=NULL,
 										 lower.tail=TRUE,log.p=FALSE) {#FOLDUP
 	basis <- tolower(match.arg(basis))
 	gca <- .gca_setup(q,raw.moments,support,basis,basepar)

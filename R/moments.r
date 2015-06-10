@@ -118,10 +118,11 @@ cumulant2moment <- function(kappa) {
 # assumes given _zeroth_ through kth centered moment.
 # divides through by the standard deviation to the
 # correct power.
-central2std <- function(mu.cent) {
-	mu.std <- mu.cent / (mu.cent[3] ^ ((0:(length(mu.cent)-1))/2))
-	return(mu.std)
-}
+# not needed for now..
+#central2std <- function(mu.cent) {
+	#mu.std <- mu.cent / (mu.cent[3] ^ ((0:(length(mu.cent)-1))/2))
+	#return(mu.std)
+#}
 
 
 #for vim modeline: (do not edit)
