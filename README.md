@@ -64,8 +64,16 @@ dfs <- c(8, 15, 4000, 10000)
 set.seed(18181)
 # now draw from the distribution
 rvs <- rsnak(n.samp, dfs)
-qqnorm(rvs)
-qqline(rvs, col = "red")
+
+data <- data.frame(draws = rvs)
+mu <- mean(rvs)
+sigma <- sd(rvs)
+library(ggplot2)
+ph <- ggplot(data, aes(sample = draws)) + stat_qq(dist = function(p) {
+    qnorm(p, mean = mu, sd = sigma)
+}) + geom_abline(slope = 1, intercept = 0, colour = "red") + 
+    theme(text = element_text(size = 8)) + labs(title = "Q-Q plot (against normality)")
+print(ph)
 ```
 
 <img src="github_extra/figure/testit-1.png" title="plot of chunk testit" alt="plot of chunk testit" width="600px" height="500px" />
@@ -155,9 +163,13 @@ The q-q plot looks better now:
 
 
 ```r
-qqplot(qsnak(ppoints(n.samp), dfs = dfs), rvs, main = "Q-Q against qsnak (C-F appx.)")
-qqline(rvs, distribution = function(p) qsnak(p, dfs), 
-    col = "red")
+data <- data.frame(draws = rvs)
+library(ggplot2)
+ph <- ggplot(data, aes(sample = draws)) + stat_qq(dist = function(p) {
+    qsnak(p, dfs = dfs)
+}) + geom_abline(slope = 1, intercept = 0, colour = "red") + 
+    theme(text = element_text(size = 8)) + labs(title = "Q-Q against qsnak (C-F appx.)")
+print(ph)
 ```
 
 <img src="github_extra/figure/improvedqq-1.png" title="plot of chunk improvedqq" alt="plot of chunk improvedqq" width="600px" height="500px" />
@@ -295,5 +307,13 @@ print(ph)
 ```
 
 <img src="github_extra/figure/chithree-1.png" title="plot of chunk chithree" alt="plot of chunk chithree" width="600px" height="500px" />
+
+### code coverage
+
+Whee! look at this:
+
+[![codecov.io](http://codecov.io/github/shabbychef/PDQutils/coverage.svg?branch=master)](http://codecov.io/github/shabbychef/PDQutils?branch=master)
+![codecov.io](http://codecov.io/github/shabbychef/PDQutils/branch.svg?branch=master)
+
 
 

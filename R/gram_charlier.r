@@ -53,12 +53,6 @@ require(moments)
 	return(scl.moments)
 }
 
-# here's the skinny. let g(x) be the pdf of the gamma RV w/ shape k and scale Θ.
-# g(x) = (1 / (Γ(k) Θ)) * (x/Θ)^(k-1) * exp(-(x/Θ))
-# Let L_n^(k-1) be the nth generalized Laguerre polynomial with alpha=k-1
-# then
-# integral_0^\inf L_n^(k-1)(x/Θ) L_m^(k-1)(x/Θ) g(x)dx = δ_n,m Γ(n+k) / (Γ(k) n!)
-
 .gca_setup <- function(x,raw.moments,support=NULL, basis=c('normal','gamma','beta','arcsine','wigner'), basepar=NULL) {
 	basis <- tolower(match.arg(basis))
 	# the zeroth moment
@@ -107,13 +101,11 @@ require(moments)
 		moments <- .scale_moments(moments,1/sigma)
 		scalby <- 1/sigma
 		support <- c(-1,1)
-	} else {
-		stop('badCode')
-	}#UNFOLD
+	} else { stop('badCode') }#UNFOLD
 	# guess the base distribution parameters, from the moments?#FOLDUP
 	if (is.null(basepar)) {
 		if (basis == 'gamma') {
-			# moments for gamma are kΘ and kΘ² + (kθ)²
+			# first two uncentered moments for gamma are k theta and k theta^2 + (k theta)^2
 			theta <- (moments[3]/moments[2]) - moments[2]
 			k <- moments[2] / theta
 			basepar <- list(shape=k,scale=theta)
@@ -178,9 +170,8 @@ require(moments)
 													(-2/idx) * exp(lbeta(palpha+2,pbeta+2) - lbeta(palpha+1,pbeta+1)) *
 													(0.5 * dbeta(0.5 * (x+1),shape1=palpha+2,shape2=pbeta+2)) *
 													as.function(ipoly[[idx]])(y) } }))
-	} else {
-		stop(paste('badCode: distribution',basis,'unknown'))
-	}
+	} else { stop(paste('badCode: distribution',basis,'unknown')) }
+
 	retval <- list(x=x,full_moments=moments,support=support,scalby=scalby,
 								 order.max=order.max,orders=orders,
 								 wt=wt,poly=poly,hn=hn,intpoly=intpoly)
@@ -197,10 +188,12 @@ require(moments)
 #'
 #' @usage
 #'
-#' dapx_gca(x, raw.moments, support=NULL, basis=c('normal','gamma','beta','arcsine','wigner'), 
+#' dapx_gca(x, raw.moments, support=NULL, 
+#'  basis=c('normal','gamma','beta','arcsine','wigner'), 
 #'  basepar=NULL, log=FALSE)
 #'
-#' papx_gca(q, raw.moments, support=NULL, basis=c('normal','gamma','beta','arcsine','wigner'), 
+#' papx_gca(q, raw.moments, support=NULL, 
+#'  basis=c('normal','gamma','beta','arcsine','wigner'), 
 #'  basepar=NULL, lower.tail=TRUE, log.p=FALSE)
 #'
 #' @param x where to evaluate the approximate density.

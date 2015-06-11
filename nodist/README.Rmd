@@ -84,14 +84,22 @@ Let's take one hundred thousand draws from this distribution and see whether it 
 by performing a q-q plot against a normal distribution.
 
 
-```{r testit,eval=TRUE,echo=TRUE,dpi=200,out.width='600px',out.height='500px'}
+```{r testit,eval=TRUE,echo=TRUE,cache=TRUE,dpi=200,out.width='600px',out.height='500px'}
 n.samp <- 1e5
 dfs <- c(8,15,4000,10000)
 set.seed(18181)
 # now draw from the distribution 
 rvs <- rsnak(n.samp,dfs)
-qqnorm(rvs)
-qqline(rvs,col='red')
+
+data <- data.frame(draws=rvs)
+mu <- mean(rvs)
+sigma <- sd(rvs)
+library(ggplot2)
+ph <- ggplot(data, aes(sample = draws)) + stat_qq(dist=function(p) { qnorm(p,mean=mu,sd=sigma) }) +
+		geom_abline(slope=1,intercept=0,colour='red') + 
+		theme(text=element_text(size=8)) + 
+		labs(title="Q-Q plot (against normality)")
+print(ph)
 ```
 
 While this is very nearly normal, we can get a better approximation.
@@ -168,10 +176,13 @@ The q-q plot looks better now:
 
 ```{r improvedqq,eval=TRUE,echo=TRUE,cache=TRUE,dpi=450,out.width='600px',out.height='500px'}
 
-qqplot(qsnak(ppoints(n.samp),dfs=dfs),rvs,
-	main='Q-Q against qsnak (C-F appx.)')
-qqline(rvs, distribution=function(p) qsnak(p,dfs),
-	col='red')
+data <- data.frame(draws=rvs)
+library(ggplot2)
+ph <- ggplot(data, aes(sample = draws)) + stat_qq(dist=function(p) { qsnak(p,dfs=dfs) }) +
+		geom_abline(slope=1,intercept=0,colour='red') + 
+		theme(text=element_text(size=8)) + 
+		labs(title="Q-Q against qsnak (C-F appx.)")
+print(ph)
 
 ```
 
@@ -282,5 +293,13 @@ require(ggplot2)
 ph <- ggplot(arr.data,aes(x=x,y=density,group=cdf,colour=cdf)) + geom_line()
 print(ph)
 ```
+
+### code coverage
+
+Whee! look at this:
+
+[![codecov.io](http://codecov.io/github/shabbychef/PDQutils/coverage.svg?branch=master)](http://codecov.io/github/shabbychef/PDQutils?branch=master)
+![codecov.io](http://codecov.io/github/shabbychef/PDQutils/branch.svg?branch=master)
+
 
 
