@@ -308,12 +308,3 @@ print(ph)
 
 <img src="github_extra/figure/chithree-1.png" title="plot of chunk chithree" alt="plot of chunk chithree" width="600px" height="500px" />
 
-### code coverage
-
-Whee! look at this:
-
-[![codecov.io](http://codecov.io/github/shabbychef/PDQutils/coverage.svg?branch=master)](http://codecov.io/github/shabbychef/PDQutils?branch=master)
-![codecov.io](http://codecov.io/github/shabbychef/PDQutils/branch.svg?branch=master)
-
-
-

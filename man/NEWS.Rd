@@ -12,10 +12,11 @@ News for package 'PDQutils':
 \newcommand{\CRANpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\PDQutils}{\CRANpkg{PDQutils}}
 }
-\section{\PDQutils{} Version 0.1.2 (2015-07-01) }{
+\section{\PDQutils{} Version 0.1.2 (2015-06-15) }{
 
 \itemize{
 \item Generalized Gram Charlier expansions.
+\item bugfixes.
 }
 }
 

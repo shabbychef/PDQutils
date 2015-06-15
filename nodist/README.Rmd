@@ -294,12 +294,3 @@ ph <- ggplot(arr.data,aes(x=x,y=density,group=cdf,colour=cdf)) + geom_line()
 print(ph)
 ```
 
-### code coverage
-
-Whee! look at this:
-
-[![codecov.io](http://codecov.io/github/shabbychef/PDQutils/coverage.svg?branch=master)](http://codecov.io/github/shabbychef/PDQutils?branch=master)
-![codecov.io](http://codecov.io/github/shabbychef/PDQutils/branch.svg?branch=master)
-
-
-

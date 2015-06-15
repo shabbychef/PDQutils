@@ -1,4 +1,9 @@
 
+2015-06-15 Steven E. Pav <shabbychef@gmail.com>
+* generalized Gram Charlier expansions.
+* fix buggy lower.tail computations.
+* add more tests.
+
 2015-02-26 Steven E. Pav <shabbychef@gmail.com>
 * add Edgeworth expansion.
 * fix buggy Gram Charlier CDF.

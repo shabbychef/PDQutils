@@ -34,7 +34,7 @@ set.char.seed <- function(str) {
 THOROUGHNESS <- getOption('test.thoroughness',1.0)
 #UNFOLD
 
-context("GC code")#FOLDUP
+context("GC code runs")#FOLDUP
 test_that("GC trivial normal",{#FOLDUP
 	xvals <- seq(-2,2,length.out=501)
 	raw.moments <- c(0,1,0,3,0)
@@ -111,6 +111,7 @@ test_that("GC trivial beta",{#FOLDUP
 	# sentinel
 	expect_true(TRUE)
 })#UNFOLD
+
 test_that("GC check runs",{#FOLDUP
 
 	# these are nfg for now....
@@ -129,7 +130,79 @@ test_that("GC check runs",{#FOLDUP
 })#UNFOLD
 #UNFOLD
 
-context("moments code")#FOLDUP
+context("GC NA checks")#FOLDUP
+test_that("GC check NA",{#FOLDUP
+	chidf <- 50
+	ords <- seq(1,9)
+	raw.moments <- exp(ords * log(2) + lgamma((chidf/2) + ords) - lgamma(chidf/2))
+
+	xvals <- seq(0.8/chidf,chidf*1.25,length.out=201)
+	suppo <- c(0,Inf)
+	for (bases in c('normal','gamma')) {
+		for (lp in c(FALSE,TRUE)) {
+			d1 <- dapx_gca(xvals, raw.moments, support=suppo, basis=bases, log=lp)
+			expect_true(!any(is.na(d1)))
+			for (lt in c(FALSE,TRUE)) {
+				p1 <- papx_gca(xvals, raw.moments, support=suppo, basis=bases, log.p=lp, lower.tail=lt)
+				expect_true(!any(is.na(p1)))
+			}
+		}
+	}
+
+	shape1 <- 10
+	shape2 <- 30
+	ords <- seq(0,8)
+	raw.moments <- cumprod((shape1 + ords) / (shape1 + shape2 + ords))
+	xvals <- seq(0.001,0.999,length.out=801)
+	suppo <- c(0,1)
+	for (bases in c('normal','gamma','beta')) {
+		for (lp in c(FALSE,TRUE)) {
+			d1 <- dapx_gca(xvals, raw.moments, support=suppo, basis=bases, log=lp)
+			expect_true(!any(is.na(d1)))
+			for (lt in c(FALSE,TRUE)) {
+				p1 <- papx_gca(xvals, raw.moments, support=suppo, basis=bases, log.p=lp, lower.tail=lt)
+				expect_true(!any(is.na(p1)))
+			}
+		}
+	}
+
+	# sentinel
+	expect_true(TRUE)
+})#UNFOLD
+#UNFOLD
+
+context("GC tail checks")#FOLDUP
+test_that("GC check tail",{#FOLDUP
+	chidf <- 50
+	ords <- seq(1,9)
+	raw.moments <- exp(ords * log(2) + lgamma((chidf/2) + ords) - lgamma(chidf/2))
+
+	xvals <- seq(0.8/chidf,chidf*1.25,length.out=201)
+	suppo <- c(0,Inf)
+	for (bases in c('normal','gamma')) {
+		p1 <- papx_gca(xvals, raw.moments, support=suppo, basis=bases, log.p=FALSE, lower.tail=TRUE)
+		p2 <- papx_gca(xvals, raw.moments, support=suppo, basis=bases, log.p=FALSE, lower.tail=FALSE)
+		expect_true(max(abs(p1 + p2 - 1.0)) < 1e-5)
+	}
+
+	shape1 <- 10
+	shape2 <- 30
+	ords <- seq(0,8)
+	raw.moments <- cumprod((shape1 + ords) / (shape1 + shape2 + ords))
+	xvals <- seq(0.001,0.999,length.out=801)
+	suppo <- c(0,1)
+	for (bases in c('normal','gamma','beta')) {
+		p1 <- papx_gca(xvals, raw.moments, support=suppo, basis=bases, log.p=FALSE, lower.tail=TRUE)
+		p2 <- papx_gca(xvals, raw.moments, support=suppo, basis=bases, log.p=FALSE, lower.tail=FALSE)
+		expect_true(max(abs(p1 + p2 - 1.0)) < 1e-5)
+	}
+
+	# sentinel
+	expect_true(TRUE)
+})#UNFOLD
+#UNFOLD
+
+context("moments code sane")#FOLDUP
 test_that("moments basics",{#FOLDUP
 	raw.mom1 <- c(0,1,0,3,0)
 	raw.cumul1 <- moment2cumulant(raw.mom1)

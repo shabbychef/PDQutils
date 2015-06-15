@@ -158,6 +158,7 @@ papx_edgeworth <- function(q,raw.cumulants,support=c(-Inf,Inf),lower.tail=TRUE,l
 		# transform q and the raw cumulants
 		q <- - q
 		raw.cumulants <- raw.cumulants * ((-1)^(1:order.max))
+		support <- sort(-support)
 	}
 
 	mu <- raw.cumulants[1]
