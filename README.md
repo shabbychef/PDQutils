@@ -4,6 +4,7 @@
 
 [![Build Status](https://travis-ci.org/shabbychef/PDQutils.png)](https://travis-ci.org/shabbychef/PDQutils)
 [![codecov.io](http://codecov.io/github/shabbychef/PDQutils/coverage.svg?branch=master)](http://codecov.io/github/shabbychef/PDQutils?branch=master)
+![](http://cranlogs-dev.r-pkg.org/badges/PDQutils)
 
 PDQ Functions via Gram Charlier, Edgeworth, and Cornish Fisher Approximations
 
