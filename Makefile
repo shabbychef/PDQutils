@@ -463,6 +463,9 @@ newbuild :
 	$(MAKE) build
 
 # http://krisjordan.com/essays/encrypting-with-rsa-key-pairs
+.codecov_token :
+	echo "export CODECOV_TOKEN='$$CODECOV_TOKEN'" | openssl rsautl -encrypt -pubin -inkey ~/.ssh/id_rsa.pub.pem > $@
+
 token : .codecov_token
 	< $< openssl rsautl -decrypt -inkey ~/.ssh/id_rsa | tee $@
 
