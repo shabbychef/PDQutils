@@ -101,7 +101,7 @@ require(moments)
 		moments <- .scale_moments(moments,1/sigma)
 		scalby <- 1/sigma
 		support <- c(-1,1)
-	} else { stop('badCode') }#UNFOLD
+	} else { stop('badCode') }#UNFOLD  # nocov
 	# guess the base distribution parameters, from the moments?#FOLDUP
 	if (is.null(basepar)) {
 		if (basis == 'gamma') {
@@ -170,7 +170,7 @@ require(moments)
 													(-2/idx) * exp(lbeta(palpha+2,pbeta+2) - lbeta(palpha+1,pbeta+1)) *
 													(0.5 * dbeta(0.5 * (x+1),shape1=palpha+2,shape2=pbeta+2)) *
 													as.function(ipoly[[idx]])(y) } }))
-	} else { stop(paste('badCode: distribution',basis,'unknown')) }
+	} else { stop(paste('badCode: distribution',basis,'unknown')) } # nocov
 
 	retval <- list(x=x,full_moments=moments,support=support,scalby=scalby,
 								 order.max=order.max,orders=orders,
