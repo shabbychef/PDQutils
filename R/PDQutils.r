@@ -131,10 +131,20 @@
 #'
 NULL
 
-#' @title News for package 'PDQutils':
+#' @title News for package \sQuote{PDQutils}:
 #'
+#' @description
+#'
+#' News for package \sQuote{PDQutils}.
+#'
+#' \newcommand{\pkg}{#1}
 #' \newcommand{\CRANpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\PDQutils}{\CRANpkg{PDQutils}}
+#'
+#' @section \PDQutils{} Version 0.1.3 (2016-01-04) :
+#' \itemize{
+#' \item Package maintenance--no new features.
+#' }
 #'
 #' @section \PDQutils{} Version 0.1.2 (2015-06-15) :
 #' \itemize{

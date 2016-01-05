@@ -184,7 +184,8 @@ it is:
 ```r
 apx.p <- psnak(rvs, dfs = dfs)
 if (require(ggplot2)) {
-    qplot(apx.p, stat = "ecdf", geom = "step")
+    # qplot(apx.p, stat='ecdf', geom='step')
+    ggplot(data.frame(pv = apx.p), aes(x = pv)) + stat_ecdf(geom = "step")
 }
 ```
 

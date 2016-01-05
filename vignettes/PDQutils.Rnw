@@ -844,7 +844,7 @@ uniform, as shown in \figref{psnak_ecdf}.
 
 apx.p <- psnak(rvs,dfs=dfs)
 require(ggplot2)
-ph <- qplot(apx.p, stat="ecdf", geom="step")
+ph <- ggplot(data.frame(pv=apx.p),aes(x=pv)) + stat_ecdf(geom='step')
 print(ph)
 @
 
