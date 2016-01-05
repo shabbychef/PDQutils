@@ -118,6 +118,7 @@
 #' @template ref-bsantos
 #'
 #' @import orthopolynom moments
+#' @importFrom stats coef dbeta dgamma dnorm pgamma pnorm qnorm runif
 #'
 #' @name PDQutils
 #' @rdname PDQutils
