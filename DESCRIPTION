@@ -2,7 +2,7 @@ Package: PDQutils
 Maintainer: Steven E. Pav <shabbychef@gmail.com>
 Authors@R: c(person(c("Steven", "E."), "Pav", role=c("aut","cre"),
     email="shabbychef@gmail.com"))
-Version: 0.1.3.9000
+Version: 0.1.4
 Date: 2016-03-02
 License: LGPL-3
 Title: PDQ Functions via Gram Charlier, Edgeworth, and Cornish Fisher Approximations
