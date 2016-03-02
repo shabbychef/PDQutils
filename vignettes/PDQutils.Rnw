@@ -91,7 +91,7 @@ opts_chunk$set(fig.width="4in",fig.height="4in",fig.width=8,fig.height=8,dpi=450
 # for text wrapping:
 options(width=64,digits=2)
 opts_chunk$set(size="small")
-opts_chunk$set(tidy=TRUE,tidy.opts=list(width.cutoff=50,keep.blank.line=TRUE))
+opts_chunk$set(tidy=TRUE,tidy.opts=list(width.cutoff=50,blank=TRUE))
 
 compile.time <- Sys.time()
 
@@ -741,7 +741,7 @@ data <- data.frame(draws=rvs)
 library(ggplot2)
 mu <- mean(rvs)
 sigma <- sd(rvs)
-ph <- ggplot(data, aes(sample = draws)) + stat_qq(dist=function(p) { qnorm(p,mean=mu,sd=sigma) }) +
+ph <- ggplot(data, aes(sample = draws)) + stat_qq(distribution=function(p) { qnorm(p,mean=mu,sd=sigma) }) +
 		geom_abline(slope=1,intercept=0,colour='red') + 
 		theme(text=element_text(size=8)) + 
 		labs(title="Q-Q plot (against normality)")
@@ -827,7 +827,7 @@ shown in \figref{improvedqq}.
 
 data <- data.frame(draws=rvs)
 library(ggplot2)
-ph <- ggplot(data, aes(sample = draws)) + stat_qq(dist=function(p) { qsnak(p,dfs=dfs) }) +
+ph <- ggplot(data, aes(sample = draws)) + stat_qq(distribution=function(p) { qsnak(p,dfs=dfs) }) +
 		geom_abline(slope=1,intercept=0,colour='red') + 
 		theme(text=element_text(size=8)) + 
 		labs(title="Q-Q against qsnak (C-F appx.)")
