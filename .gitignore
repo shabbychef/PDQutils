@@ -11,6 +11,8 @@
 .local/
 .staging/
 *.Rcheck
+.docker_img
+*.crancheck
 
 # unit testing
 unit_test.log
