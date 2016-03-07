@@ -142,6 +142,12 @@ NULL
 #' \newcommand{\CRANpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\PDQutils}{\CRANpkg{PDQutils}}
 #'
+#' @section \PDQutils{} Version 0.1.4 (2016-03-03) :
+#' \itemize{
+#' \item Package maintenance--no new features.
+#' \item Incompatibilities in vignette with ggplot2 release.
+#' }
+#'
 #' @section \PDQutils{} Version 0.1.3 (2016-01-04) :
 #' \itemize{
 #' \item Package maintenance--no new features.

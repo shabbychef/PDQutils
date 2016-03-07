@@ -1,4 +1,7 @@
 
+2016-03-03 Steven E. Pav <shabbychef@gmail.com>
+* ggplot2 incompatibilities
+
 2015-06-15 Steven E. Pav <shabbychef@gmail.com>
 * generalized Gram Charlier expansions.
 * fix buggy lower.tail computations.
