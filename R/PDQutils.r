@@ -139,7 +139,7 @@ NULL
 #' News for package \sQuote{PDQutils}.
 #'
 #' \newcommand{\pkg}{#1}
-#' \newcommand{\CRANpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
+#' \newcommand{\CRANpkg}{\href{http://cran.r-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\PDQutils}{\CRANpkg{PDQutils}}
 #'
 #' @section \PDQutils{} Version 0.1.4 (2016-03-03) :
