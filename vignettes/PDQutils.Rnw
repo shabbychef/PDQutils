@@ -57,7 +57,7 @@
 \newcommand{\pkg}[1]{{\normalfont\fontseries{b}\selectfont #1}}
 \let\proglang=\textsf
 \let\code=\texttt
-\newcommand{\CRANpkg}[1]{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
+\newcommand{\CRANpkg}[1]{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\PDQutils}{\CRANpkg{PDQutils}\xspace}
 
 % knitr setup%FOLDUP
