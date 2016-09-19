@@ -25,8 +25,8 @@ M4_FILES					?= $(wildcard m4/*.m4)
 
 VMAJOR 						 = 0
 VMINOR 						 = 1
-VPATCH  					 = 4
-VDEV 							 = .5000
+VPATCH  					 = 5
+VDEV 							 = 
 VERSION 					 = $(VMAJOR).$(VMINOR).$(VPATCH)$(VDEV)
 TODAY 						:= $(shell date +%Y-%m-%d)
 

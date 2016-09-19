@@ -33,4 +33,7 @@
 library(testthat)
 library(PDQutils)
 
-test_package("PDQutils")
+test_check("PDQutils")
+
+#for vim modeline: (do not edit)
+# vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=#%s:syn=r:ft=r
