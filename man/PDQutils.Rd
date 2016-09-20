@@ -117,7 +117,7 @@ Lee, Y-S., and Lin, T-K. "Correction to Algorithm AS269: High Order
 Cornish Fisher Expansion." Appl. Stat. 42, no. 1 (1993): 268-269. 
 \url{http://www.jstor.org/stable/2347433}
 
-AS 269. \url{https://web.archive.org/web/20110103030111/http://lib.stat.cmu.edu/apstat/269}
+AS 269. \url{http://lib.stat.cmu.edu/apstat/269}
 
 Jaschke, Stefan R. "The Cornish-Fisher-expansion in the context of 
 Delta-Gamma-normal approximations." No. 2001, 54. Discussion Papers, 
