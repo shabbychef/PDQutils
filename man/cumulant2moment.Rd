@@ -7,11 +7,12 @@
 cumulant2moment(kappa)
 }
 \arguments{
-\item{kappa}{a vector of the raw cumulants. The first element is the first cumulant,
-which is also the first moment.}
+\item{kappa}{a vector of the raw cumulants. 
+The first element is the first cumulant, which is also the first moment.}
 }
 \value{
 a vector of the raw moments.
+The first element of the input shall be the same as the first element of the output.
 }
 \description{
 Conversion of a vector of raw cumulatnts to moments.

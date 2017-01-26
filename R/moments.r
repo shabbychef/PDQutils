@@ -43,9 +43,14 @@
 #'
 #' moment2cumulant(moms)
 #'
-#' @param moms a vector of the moments. The first element is the first moment.
-#' If centered moments are given, the first cumulant shall be zero.
-#' @return a vector of the cumulants.
+#' @param moms a vector of the moments. The first element is the first moment
+#' (the mean).  
+#' If centered moments are given, the first moment must be zero. 
+#' If raw moments are given, the first moment must be the mean.
+#' @return a vector of the cumulants. 
+#' The first element of the input shall be the same as the first element of the output.
+#' @note The presence of a \code{NA} or infinite value in the input
+#' will propagate to the output.
 #'
 #' @keywords distribution 
 #' @seealso \code{\link{cumulant2moment}}
@@ -89,9 +94,10 @@ moment2cumulant <- function(moms) {
 #'
 #' cumulant2moment(kappa)
 #'
-#' @param kappa a vector of the raw cumulants. The first element is the first cumulant,
-#' which is also the first moment.
+#' @param kappa a vector of the raw cumulants. 
+#' The first element is the first cumulant, which is also the first moment.
 #' @return a vector of the raw moments.
+#' The first element of the input shall be the same as the first element of the output.
 #'
 #' @keywords distribution 
 #' @seealso \code{\link{moment2cumulant}}

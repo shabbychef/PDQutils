@@ -7,11 +7,14 @@
 moment2cumulant(moms)
 }
 \arguments{
-\item{moms}{a vector of the moments. The first element is the first moment.
-If centered moments are given, the first cumulant shall be zero.}
+\item{moms}{a vector of the moments. The first element is the first moment
+(the mean).  
+If centered moments are given, the first moment must be zero. 
+If raw moments are given, the first moment must be the mean.}
 }
 \value{
-a vector of the cumulants.
+a vector of the cumulants. 
+The first element of the input shall be the same as the first element of the output.
 }
 \description{
 Conversion of a vector of moments to raw cumulants.
@@ -24,6 +27,10 @@ the equation
 
 Note that this formula also works for central moments, assuming
 the distribution has been normalized to zero mean.
+}
+\note{
+The presence of a \code{NA} or infinite value in the input
+will propagate to the output.
 }
 \examples{
 # normal distribution, mean 0, variance 1
