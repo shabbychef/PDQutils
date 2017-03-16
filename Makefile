@@ -26,7 +26,7 @@ M4_FILES					?= $(wildcard m4/*.m4)
 VMAJOR 						 = 0
 VMINOR 						 = 1
 VPATCH  					 = 5
-VDEV 							 = .1000
+VDEV 							 = .2000
 VERSION 					 = $(VMAJOR).$(VMINOR).$(VPATCH)$(VDEV)
 TODAY 						:= $(shell date +%Y-%m-%d)
 
@@ -240,7 +240,10 @@ TAGS:
 % : m4/%.m4 Makefile
 	m4 -I ./m4 -DVERSION=$(VERSION) -DDATE=$(TODAY) -DPKG_NAME=$(PKG_NAME) $< > $@
 
-%.md : %.Rmd
+tools/figure :
+	mkdir -p $@
+
+%.md : %.Rmd | tools/figure
 	$(call WARN_DEPS)
 	$(call MKDIR,$(EXTDATA_D))
 	R_LIBS=$(LOCAL) R_PROFILE=load.R \
@@ -250,9 +253,6 @@ TAGS:
 
 cached_data : $(PREMAKE_RDA)
 
-README.md : $(NODIST_R_DIR)/README.md
-	mv $< $@
-	rsync -av --delete $(NODIST_R_DIR)/github_extra/ ./github_extra/
 
 # macro for local R
 R_LOCALLY  						= R_LIBS=$(LOCAL) $(R) $(R_FLAGS)

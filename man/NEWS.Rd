@@ -10,6 +10,14 @@ News for package \sQuote{PDQutils}.
 \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\PDQutils}{\CRANpkg{PDQutils}}
 }
+\section{\PDQutils{} Version 0.1.6 (2017-03-25) }{
+
+\itemize{
+\item Package maintenance--no new features.
+\item move github figures to location CRAN understands.
+}
+}
+
 \section{\PDQutils{} Version 0.1.5 (2016-09-18) }{
 
 \itemize{

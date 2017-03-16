@@ -79,7 +79,7 @@ ph <- ggplot(data, aes(sample = draws)) + stat_qq(distribution = function(p) {
 print(ph)
 ```
 
-<img src="github_extra/figure/testit-1.png" title="plot of chunk testit" alt="plot of chunk testit" width="600px" height="500px" />
+<img src="tools/figure/testit-1.png" title="plot of chunk testit" alt="plot of chunk testit" width="600px" height="500px" />
 
 While this is very nearly normal, we can get a better approximation.
 Using the additivity
@@ -175,7 +175,7 @@ ph <- ggplot(data, aes(sample = draws)) + stat_qq(distribution = function(p) {
 print(ph)
 ```
 
-<img src="github_extra/figure/improvedqq-1.png" title="plot of chunk improvedqq" alt="plot of chunk improvedqq" width="600px" height="500px" />
+<img src="tools/figure/improvedqq-1.png" title="plot of chunk improvedqq" alt="plot of chunk improvedqq" width="600px" height="500px" />
 
 Note that the q-q plot uses the approximate quantile function, qsnak. If we compute the
 approximate CDF of the random draws, we hope it will be nearly uniform, and indeed
@@ -190,7 +190,7 @@ if (require(ggplot2)) {
 }
 ```
 
-<img src="github_extra/figure/snakuni-1.png" title="plot of chunk snakuni" alt="plot of chunk snakuni" width="600px" height="500px" />
+<img src="tools/figure/snakuni-1.png" title="plot of chunk snakuni" alt="plot of chunk snakuni" width="600px" height="500px" />
 
 # Edgeworth versus Gram Charlier
 
@@ -233,7 +233,7 @@ ph <- ggplot(arr.data, aes(x = x, y = density, group = pdf,
 print(ph)
 ```
 
-<img src="github_extra/figure/chisetup-1.png" title="plot of chunk chisetup" alt="plot of chunk chisetup" width="600px" height="500px" />
+<img src="tools/figure/chisetup-1.png" title="plot of chunk chisetup" alt="plot of chunk chisetup" width="600px" height="500px" />
 
 Compare this with the 2 and 4 term Edgeworth expansions, replicating figure 6 of Blinnikov and Moessner:
 
@@ -264,7 +264,7 @@ ph <- ggplot(arr.data, aes(x = x, y = density, group = pdf,
 print(ph)
 ```
 
-<img src="github_extra/figure/chitwo-1.png" title="plot of chunk chitwo" alt="plot of chunk chitwo" width="600px" height="500px" />
+<img src="tools/figure/chitwo-1.png" title="plot of chunk chitwo" alt="plot of chunk chitwo" width="600px" height="500px" />
 
 # Rearranging for monotonicity 
 
@@ -310,5 +310,5 @@ ph <- ggplot(arr.data, aes(x = x, y = density, group = cdf,
 print(ph)
 ```
 
-<img src="github_extra/figure/chithree-1.png" title="plot of chunk chithree" alt="plot of chunk chithree" width="600px" height="500px" />
+<img src="tools/figure/chithree-1.png" title="plot of chunk chithree" alt="plot of chunk chithree" width="600px" height="500px" />
 
