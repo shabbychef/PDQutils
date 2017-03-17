@@ -36,11 +36,15 @@ PKG_VERSION				:= $(VERSION)
 PKG_SRC 					:= $(shell basename $(PWD))
 
 PKG_TGZ 					 = $(PKG_NAME)_$(PKG_VERSION).tar.gz
+PKG_INSTALLED 		 = .$(basename $(basename $(PKG_TGZ))).installed
+PKG_CRANCHECK 		 = $(basename $(basename $(PKG_TGZ))).crancheck
+DRAT_SENTINEL   	 = .drat_$(PKG_TGZ)
+
+CHECK_TMP 				 = .check_tmp
 
 LOCAL 						:= .local
 RCHECK 						 = $(PKG_NAME).Rcheck
 RCHECK_SENTINEL 	 = $(RCHECK)/$(PKG_NAME)/DESCRIPTION
-DRAT_SENTINEL   	 = .drat_$(PKG_TGZ)
 
 # Specify the directory holding R binaries. To use an alternate R build (say a
 # pre-prelease version) use `make RBIN=/path/to/other/R/` or `export RBIN=...`
@@ -319,9 +323,22 @@ $(PKG_TGZ) : $(STAGED_PKG)/DESCRIPTION $(INSTALLED_DEPS) $(EXTRA_PKG_DEPS)
 
 .docker_img : docker/Dockerfile
 	$(DOCKER) build --rm -t $(USER)/$(PKG_LCNAME)-crancheck docker
+	touch $@
+
+%.crapcheck : %.tar.gz .docker_img
+	$(DOCKER) run -it --rm --volume $(PWD):/srv:ro $(USER)/$(PKG_LCNAME)-crancheck $< > $@
+
+#@-rm -rf $(CHECK_TMP)
+#@mkdir -p $(CHECK_TMP)
 
 %.crancheck : %.tar.gz .docker_img
-	$(DOCKER) run -it --rm --volume $(PWD):/srv:ro $(USER)/$(PKG_LCNAME)-crancheck $< > $@
+	$(eval CHECK_TMP:=$(shell mktemp -u .check_tmp_$(PKG_LCNAME)_XXXXXXXXXXXXXXXXXX))
+	mkdir -p $(CHECK_TMP)
+	$(DOCKER) run -it --rm --volume $(PWD):/srv:ro --volume $$(pwd $(CHECK_TMP))/$(CHECK_TMP):/tmp:rw $(USER)/$(PKG_LCNAME)-crancheck $< > $@
+	@-cat $(CHECK_TMP)/$(PKG_NAME).Rcheck/00check.log >> $@
+	@-cat $(CHECK_TMP)/$(PKG_NAME).Rcheck/$(PKG_NAME)-Ex.timings >> $@
+
+crancheck: $(PKG_CRANCHECK) ## check the package as CRAN.
 
 build : $(PKG_TGZ)
 
