@@ -142,7 +142,7 @@ NULL
 #' \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\PDQutils}{\CRANpkg{PDQutils}}
 #'
-#' @section \PDQutils{} Version 0.1.6 (2017-03-25) :
+#' @section \PDQutils{} Version 0.1.6 (2017-03-18) :
 #' \itemize{
 #' \item Package maintenance--no new features.
 #' \item move github figures to location CRAN understands.
