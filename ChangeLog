@@ -1,16 +1,35 @@
 
+2017-03-18 Steven E. Pav <shabbychef@gmail.com>
+* 0.1.6 on CRAN
+* package maintenance
+* move github figures to location CRAN understands
+
+2016-09-18 Steven E. Pav <shabbychef@gmail.com>
+* 0.1.5 on CRAN
+* package maintenance
+* Remove errant files from test directory
+
 2016-03-03 Steven E. Pav <shabbychef@gmail.com>
+* 0.1.4 on CRAN
+* package maintenance
 * ggplot2 incompatibilities
 
+2016-03-03 Steven E. Pav <shabbychef@gmail.com>
+* 0.1.3 on CRAN
+* package maintenance
+
 2015-06-15 Steven E. Pav <shabbychef@gmail.com>
+* 0.1.2 on CRAN
 * generalized Gram Charlier expansions.
 * fix buggy lower.tail computations.
 * add more tests.
 
 2015-02-26 Steven E. Pav <shabbychef@gmail.com>
+* 0.1.1 on CRAN
 * add Edgeworth expansion.
 * fix buggy Gram Charlier CDF.
 
 2015-02-14 Steven E. Pav <shabbychef@gmail.com>
+* 0.1.0 on CRAN
 * first release.
 
