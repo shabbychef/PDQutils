@@ -1,7 +1,9 @@
 Package: PDQutils
 Maintainer: Steven E. Pav <shabbychef@gmail.com>
-Authors@R: c(person(c("Steven", "E."), "Pav", role=c("aut","cre"),
-    email="shabbychef@gmail.com"))
+Authors@R: c(person(c("Steven", "E."), "Pav", 
+    role=c("aut","cre"),
+    email="shabbychef@gmail.com",
+		comment = c(ORCID = "0000-0002-4197-6195")))
 Version: 0.1.6.1000
 Date: 2017-03-19
 License: LGPL-3
