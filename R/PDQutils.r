@@ -26,7 +26,7 @@
 #' @section Gram Charlier and Edgeworth Expansions:
 #'
 #' Given the raw moments of a probability distribution, we can approximate the probability 
-#' density function, or the cumulative distribution function, via a Gram-Charlier 'A'
+#' density function, or the cumulative distribution function, via a Gram-Charlier \dQuote{A}
 #' expansion on the standardized distribution.
 #'
 #' Suppose \eqn{f(x)}{f(x)} is the probability density of some random
@@ -42,7 +42,7 @@
 #' Expanding the density \eqn{f(x)}{f(x)} in terms of these polynomials in the
 #' usual way (abusing orthogonality) one has
 #' \deqn{f(x) \approx \sum_{0\le j} \frac{He_j(x)}{j!} \phi(x) \int_{-\infty}^{\infty} f(z) He_j(z) \mathrm{d}z.}{f(x) = sum_{0 <= j} (He_j(x)/j!) phi(x) integral_-inf^inf f(z) He_j(z) dz.}
-#' The cumulative distribution function is 'simply' the integral of this
+#' The cumulative distribution function is simply the integral of this
 #' expansion. Abusing certain facts regarding the PDF and CDF of the normal
 #' distribution and the probabilist's Hermite polynomials, the CDF has
 #' the representation
@@ -60,11 +60,11 @@
 #'
 #' @section Generalized Gram Charlier Expansions:
 #'
-#' The Gram Charlier 'A' expansion is most appropriate for random variables
+#' The Gram Charlier \dQuote{A} expansion is most appropriate for random variables
 #' which are vaguely like the normal distribution. For those which are like
 #' another distribution, the same general approach can be pursued. One needs
 #' only define a weighting function, \eqn{w}, which is the density of the
-#' 'parent' probability distribution, then find polynomials,
+#' \sQuote{parent} probability distribution, then find polynomials,
 #' \eqn{p_n(x)}{p_n(x)} which are orthogonal with respect to \eqn{w} over
 #' its support. One has
 #' \deqn{f(x) = \sum_{0\le j} p_j(x) w(x) \frac{1}{h_j} \int_{-\infty}^{\infty} f(z) p_j(z) \mathrm{d}z.}{f(x) = sum_{0 <= j} p_j w(x) (1/h_j) integral_-inf^inf f(z) p_j(z) dz.}

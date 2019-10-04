@@ -18,8 +18,8 @@ The first element of the input shall be the same as the first element of the out
 Conversion of a vector of raw cumulatnts to moments.
 }
 \details{
-The 'raw' cumulants \eqn{\kappa_i}{kappa_i} are connected
-to the 'raw' (uncentered) moments, \eqn{\mu_i'}{mu'_i} via
+The \sQuote{raw} cumulants \eqn{\kappa_i}{kappa_i} are connected
+to the \sQuote{raw} (uncentered) moments, \eqn{\mu_i'}{mu'_i} via
 the equation
 \deqn{\mu_n' = \kappa_n + \sum_{m=1}^{n-1} {n-1 \choose m-1} \kappa_m \mu_{n-m}'}
 }
@@ -29,11 +29,10 @@ n.mom <- cumulant2moment(c(0,1,0,0,0,0))
 # normal distribution, mean 1, variance 1
 n.mom <- cumulant2moment(c(1,1,0,0,0,0))
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \seealso{
 \code{\link{moment2cumulant}}
 }
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}
 \keyword{distribution}
-

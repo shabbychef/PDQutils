@@ -1,4 +1,6 @@
 # for testing, ignore these
+Meta
+doc/
 
 # dev stuff
 .tags
@@ -13,30 +15,30 @@
 *.Rcheck
 .docker_img
 *.crancheck
-
 # unit testing
 unit_test.log
-
 # drat sentinel
 .drat_*
-
 # build static/dynamic
 convoluted_build.sh
-
 # codecov
 token
-
 # automagically generated?
 # ah, but these are needed for install_github:
 #NAMESPACE
 #DESCRIPTION
 #man/
-
 # generated as part of the 'local' vignette build
-SKELETON.tex
-SKELETON.log
-./SKELETON.pdf
+PDQutils.tex
+PDQutils.log
+PDQutils/
+./PDQutils.pdf
 *.aux
 *.bbl
 *.blg
 cache/
+.docker_img
+*.crancheck
+.Rd2pdf*/
+Rd2.pdf
+submodule_directions.sh

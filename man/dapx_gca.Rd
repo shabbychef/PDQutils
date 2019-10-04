@@ -27,7 +27,7 @@ This defaults to \code{c(-Inf,Inf)} for the normal basis,
 \code{c(-1,1)} for the arcsine and wigner.}
 
 \item{basis}{the basis under which to perform the approximation. \code{'normal'}
-gives the classical 'A' series expansion around the PDF and CDF of the normal
+gives the classical \dQuote{A} series expansion around the PDF and CDF of the normal
 distribution via Hermite polynomials. \code{'gamma'} expands around a
 gamma distribution with parameters \code{basepar$shape} and
 \code{basepar$scale}. 
@@ -58,7 +58,7 @@ Approximate the probability density or cumulative distribution function of a dis
 Given the raw moments of a probability distribution, we can approximate the probability 
 density function, or the cumulative distribution function, via a Gram-Charlier 
 expansion on the standardized distribution. This expansion uses
-some weighting function, \eqn{w}{w}, typically the density of some 'parent'
+some weighting function, \eqn{w}{w}, typically the density of some \sQuote{parent}
 probability distribution, and polynomials, \eqn{p_n}{p_n} which are
 orthogonal with respect to that weighting:
 \deqn{\int_{-\infty}^{\infty} p_n(x) p_m(x) w(x) \mathrm{d}x = h_n \delta_{mn}.}{integral_-inf^inf p_n(x) p_m(x) w(x) dx = h_n delta_mn.}
@@ -69,7 +69,7 @@ with cumulative distribution function \eqn{F(x)}{F(x)}. We express
 The constants \eqn{c_n}{c_n} can be computed from the known moments
 of the distribution.
 
-For the Gram Charlier 'A' series, the weighting function is the PDF of the
+For the Gram Charlier \dQuote{A} series, the weighting function is the PDF of the
 normal distribution, and the polynomials are the (probabilist's) Hermite
 polynomials. As a weighting function, one can also use the PDF of the gamma
 distribution (resulting in generalized Laguerre polynomials), or the
@@ -97,13 +97,13 @@ sigma <- 3
 raw.moments <- c(2,13,62,475,3182)
 d1 <- dapx_gca(xvals, raw.moments, basis='normal')
 d2 <- dnorm(xvals,mean=mu,sd=sigma)
-\dontrun{
+\donttest{
 plot(xvals,d1)
 lines(xvals,d2,col='red')
 }
 p1 <- papx_gca(xvals, raw.moments, basis='normal')
 p2 <- pnorm(xvals,mean=mu,sd=sigma)
-\dontrun{
+\donttest{
 plot(xvals,p1)
 lines(xvals,p2,col='red')
 }
@@ -115,14 +115,14 @@ raw.moments <- exp(ords * log(2) + lgamma((chidf/2) + ords) - lgamma(chidf/2))
 xvals <- seq(0.3,10,length.out=501)
 d1g <- dapx_gca(xvals, raw.moments, support=c(0,Inf), basis='gamma')
 d2 <- dchisq(xvals,df=chidf)
-\dontrun{
+\donttest{
 plot(xvals,d1g)
 lines(xvals,d2,col='red')
 }
 
 p1g <- papx_gca(xvals, raw.moments, support=c(0,Inf), basis='gamma')
 p2 <- pchisq(xvals,df=chidf)
-\dontrun{
+\donttest{
 plot(xvals,p1g)
 lines(xvals,p2,col='red')
 }
@@ -135,13 +135,10 @@ raw.moments <- exp(ords * mu + 0.5 * (sigma*ords)^2)
 xvals <- seq(0.5,10,length.out=501)
 d1g <- dapx_gca(xvals, raw.moments, support=c(0,Inf), basis='gamma')
 d2 <- dnorm(log(xvals),mean=mu,sd=sigma) / xvals
-\dontrun{
+\donttest{
 	plot(xvals,d1g)
 	lines(xvals,d2,col='red')
 }
-}
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
 }
 \references{
 Jaschke, Stefan R. "The Cornish-Fisher-expansion in the context of 
@@ -157,5 +154,7 @@ distributions." Astronomy and Astrophysics Supplement 130 (1998): 193-205.
 \seealso{
 \code{\link{qapx_cf}}
 }
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}
 \keyword{distribution}
-

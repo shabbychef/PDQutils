@@ -7,7 +7,7 @@
 rapx_cf(n, raw.cumulants, support=c(-Inf,Inf))
 }
 \arguments{
-\item{n}{number of observations. If 'length(n) > 1', the length is
+\item{n}{number of observations. If \code{length(n) > 1}, the length is
 taken to be the number required.}
 
 \item{raw.cumulants}{an atomic array of the 1st through kth raw cumulants. The first 
@@ -35,11 +35,10 @@ quantile function via a Cornish-Fisher expansion.
 # normal distribution:
 r1 <- rapx_cf(1000, c(0,1,0,0,0,0,0))
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \seealso{
 \code{\link{qapx_cf}}
 }
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}
 \keyword{distribution}
-

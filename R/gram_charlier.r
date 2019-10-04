@@ -207,7 +207,7 @@ require(moments)
 #' \code{c(0,1)} for the Beta, and 
 #' \code{c(-1,1)} for the arcsine and wigner.
 #' @param basis the basis under which to perform the approximation. \code{'normal'}
-#' gives the classical 'A' series expansion around the PDF and CDF of the normal
+#' gives the classical \dQuote{A} series expansion around the PDF and CDF of the normal
 #' distribution via Hermite polynomials. \code{'gamma'} expands around a
 #' gamma distribution with parameters \code{basepar$shape} and
 #' \code{basepar$scale}. 
@@ -251,13 +251,13 @@ require(moments)
 #' raw.moments <- c(2,13,62,475,3182)
 #' d1 <- dapx_gca(xvals, raw.moments, basis='normal')
 #' d2 <- dnorm(xvals,mean=mu,sd=sigma)
-#' \dontrun{
+#' \donttest{
 #' plot(xvals,d1)
 #' lines(xvals,d2,col='red')
 #' }
 #' p1 <- papx_gca(xvals, raw.moments, basis='normal')
 #' p2 <- pnorm(xvals,mean=mu,sd=sigma)
-#' \dontrun{
+#' \donttest{
 #' plot(xvals,p1)
 #' lines(xvals,p2,col='red')
 #' }
@@ -269,14 +269,14 @@ require(moments)
 #' xvals <- seq(0.3,10,length.out=501)
 #' d1g <- dapx_gca(xvals, raw.moments, support=c(0,Inf), basis='gamma')
 #' d2 <- dchisq(xvals,df=chidf)
-#' \dontrun{
+#' \donttest{
 #' plot(xvals,d1g)
 #' lines(xvals,d2,col='red')
 #' }
 #' 
 #' p1g <- papx_gca(xvals, raw.moments, support=c(0,Inf), basis='gamma')
 #' p2 <- pchisq(xvals,df=chidf)
-#' \dontrun{
+#' \donttest{
 #' plot(xvals,p1g)
 #' lines(xvals,p2,col='red')
 #' }
@@ -289,7 +289,7 @@ require(moments)
 #' xvals <- seq(0.5,10,length.out=501)
 #' d1g <- dapx_gca(xvals, raw.moments, support=c(0,Inf), basis='gamma')
 #' d2 <- dnorm(log(xvals),mean=mu,sd=sigma) / xvals
-#' \dontrun{
+#' \donttest{
 #' 	plot(xvals,d1g)
 #' 	lines(xvals,d2,col='red')
 #' }

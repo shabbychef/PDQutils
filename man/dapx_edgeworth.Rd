@@ -67,9 +67,6 @@ p1 <- papx_edgeworth(qvals, c(0,1,0,0,0,0))
 p2 <- pnorm(qvals)
 p1 - p2
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \references{
 S. Blinnikov and R. Moessner. "Expansions for nearly Gaussian
 distributions." Astronomy and Astrophysics Supplement 130 (1998): 193-205.
@@ -78,5 +75,7 @@ distributions." Astronomy and Astrophysics Supplement 130 (1998): 193-205.
 \seealso{
 the Gram Charlier expansions, \code{\link{dapx_gca}, \link{papx_gca}}
 }
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}
 \keyword{distribution}
-

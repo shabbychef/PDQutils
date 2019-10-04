@@ -39,7 +39,7 @@
 #' @param order.max the maximum order approximation, must be greater than
 #' \code{length(cumul)+2}.
 #' We assume the cumulants have been adjusted to reflect that the random
-#' variable has unit variance ('standardized cumulants')
+#' variable has unit variance (\sQuote{standardized cumulants}).
 #' @param all.ords a logical value. If \code{TRUE}, then results are returned
 #' as a matrix, with a column for each order of the approximation. Otherwise
 #' the results are a matrix with a single column of the highest order
@@ -255,7 +255,7 @@ qapx_cf <- function(p,raw.cumulants,support=c(-Inf,Inf),lower.tail=TRUE,log.p=FA
 #'
 #' rapx_cf(n, raw.cumulants, support=c(-Inf,Inf))
 #'
-#' @param n number of observations. If 'length(n) > 1', the length is
+#' @param n number of observations. If \code{length(n) > 1}, the length is
 #' taken to be the number required.
 #' @inheritParams qapx_cf
 #' @return A vector of approximate draws.

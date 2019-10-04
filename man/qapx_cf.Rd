@@ -45,9 +45,6 @@ q1 <- qapx_cf(pvals, c(0,1,0,0,0,0,0))
 q2 <- qnorm(pvals)
 q1 - q2
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \references{
 Lee, Y-S., and Lin, T-K. "Algorithm AS269: High Order Cornish Fisher
 Expansion." Appl. Stat. 41, no. 1 (1992): 233-240. 
@@ -68,5 +65,7 @@ Economic Processes, 2001.
 \seealso{
 \code{\link{dapx_gca}, \link{papx_gca}, \link{AS269}, \link{rapx_cf}}
 }
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}
 \keyword{distribution}
-

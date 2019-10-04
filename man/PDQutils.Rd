@@ -15,7 +15,7 @@ This package is maintained as a hobby.
 
 
 Given the raw moments of a probability distribution, we can approximate the probability 
-density function, or the cumulative distribution function, via a Gram-Charlier 'A'
+density function, or the cumulative distribution function, via a Gram-Charlier \dQuote{A}
 expansion on the standardized distribution.
 
 Suppose \eqn{f(x)}{f(x)} is the probability density of some random
@@ -31,7 +31,7 @@ The orthogonality relationship is
 Expanding the density \eqn{f(x)}{f(x)} in terms of these polynomials in the
 usual way (abusing orthogonality) one has
 \deqn{f(x) \approx \sum_{0\le j} \frac{He_j(x)}{j!} \phi(x) \int_{-\infty}^{\infty} f(z) He_j(z) \mathrm{d}z.}{f(x) = sum_{0 <= j} (He_j(x)/j!) phi(x) integral_-inf^inf f(z) He_j(z) dz.}
-The cumulative distribution function is 'simply' the integral of this
+The cumulative distribution function is simply the integral of this
 expansion. Abusing certain facts regarding the PDF and CDF of the normal
 distribution and the probabilist's Hermite polynomials, the CDF has
 the representation
@@ -51,11 +51,11 @@ may be more numerically robust.
 \section{Generalized Gram Charlier Expansions}{
 
 
-The Gram Charlier 'A' expansion is most appropriate for random variables
+The Gram Charlier \dQuote{A} expansion is most appropriate for random variables
 which are vaguely like the normal distribution. For those which are like
 another distribution, the same general approach can be pursued. One needs
 only define a weighting function, \eqn{w}, which is the density of the
-'parent' probability distribution, then find polynomials,
+\sQuote{parent} probability distribution, then find polynomials,
 \eqn{p_n(x)}{p_n(x)} which are orthogonal with respect to \eqn{w} over
 its support. One has
 \deqn{f(x) = \sum_{0\le j} p_j(x) w(x) \frac{1}{h_j} \int_{-\infty}^{\infty} f(z) p_j(z) \mathrm{d}z.}{f(x) = sum_{0 <= j} p_j w(x) (1/h_j) integral_-inf^inf f(z) p_j(z) dz.}
@@ -105,9 +105,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Lesser General Public License for more details.
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
+
 \references{
 Lee, Y-S., and Lin, T-K. "Algorithm AS269: High Order Cornish Fisher
 Expansion." Appl. Stat. 41, no. 1 (1992): 233-240. 
@@ -134,5 +132,7 @@ PDF: A Generalized Gram-Charlier Expansion." Journal of Mathematical
 Chemistry 42, no 3 (2007): 585-594.
 \url{http://web.ist.utl.pt/ist12219/data/115.pdf}
 }
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}
 \keyword{package}
-

@@ -1,7 +1,9 @@
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{Using the PDQutils Package}
+%\VignetteEncoding{UTF-8}
 %\VignetteKeyword{distributions}
 %\VignettePackage{PDQutils}
+%\usepackage[utf8]{inputenc}
 \documentclass[10pt,a4paper,english]{article}
 
 % front matter%FOLDUP

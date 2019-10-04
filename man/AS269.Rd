@@ -15,7 +15,7 @@ vector.}
 \item{order.max}{the maximum order approximation, must be greater than
 \code{length(cumul)+2}.
 We assume the cumulants have been adjusted to reflect that the random
-variable has unit variance ('standardized cumulants')}
+variable has unit variance (\sQuote{standardized cumulants}).}
 
 \item{all.ords}{a logical value. If \code{TRUE}, then results are returned
 as a matrix, with a column for each order of the approximation. Otherwise
@@ -92,9 +92,6 @@ s.cumul <- c(5,2)
 apq <- 10 + sqrt(25) * AS269(qnorm(0.95),s.cumul,all.ords=TRUE)
 
 }
-\author{
-Steven E. Pav \email{shabbychef@gmail.com}
-}
 \references{
 Lee, Y-S., and Lin, T-K. "Algorithm AS269: High Order Cornish Fisher
 Expansion." Appl. Stat. 41, no. 1 (1992): 233-240. 
@@ -115,5 +112,7 @@ Economic Processes, 2001.
 \seealso{
 \code{\link{qapx_cf}}
 }
+\author{
+Steven E. Pav \email{shabbychef@gmail.com}
+}
 \keyword{distribution}
-
