@@ -222,6 +222,7 @@ require(moments)
 #'  as \eqn{\mbox{log}(p)}{log(p)}.
 #' @param lower.tail whether to compute the lower tail. If false, we approximate the survival function.
 #' @return The approximate density at \code{x}, or the approximate CDF at
+#' \code{q}.
 #' @keywords distribution 
 #' @seealso \code{\link{qapx_cf}}
 #' @export 

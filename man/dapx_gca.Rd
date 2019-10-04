@@ -50,6 +50,7 @@ as \eqn{\mbox{log}(p)}{log(p)}.}
 }
 \value{
 The approximate density at \code{x}, or the approximate CDF at
+\code{q}.
 }
 \description{
 Approximate the probability density or cumulative distribution function of a distribution via its raw moments.
