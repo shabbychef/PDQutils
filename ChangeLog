@@ -1,4 +1,9 @@
 
+* 0.1.7 on CRAN
+* package maintenance
+* fix bugs in documentation.
+  * H/T user lrnv on github
+
 2017-03-18 Steven E. Pav <shabbychef@gmail.com>
 * 0.1.6 on CRAN
 * package maintenance
