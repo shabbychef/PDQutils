@@ -694,7 +694,7 @@ with convergence in $n$
 The Cornish Fisher approximation gives a more detailed picture of the
 quantiles of $X$,  one that is arranged in decreasing powers of
 $\sqrt{n}$. The quantile function is the function $q(p)$
-such that $P\left(X \le q(p)\right) = q(p)$. 
+such that $P\left(X \le q(p)\right) = p$. 
 The Cornish Fisher expansion is 
 $$
 q(p) = \sqrt{n}\mu + \sigma \left(z + \sum_{3 \le j} c_j f_j(z)\right),
