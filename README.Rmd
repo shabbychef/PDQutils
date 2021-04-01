@@ -33,7 +33,7 @@ opts_chunk$set(tidy=TRUE,tidy.opts=list(width.cutoff=50,blank=TRUE))
 
 # PDQutils
 
-[![Build Status](https://travis-ci.org/shabbychef/PDQutils.png)](https://travis-ci.org/shabbychef/PDQutils)
+[![Build Status](https://github.com/shabbychef/PDQutils/workflows/R-CMD-check/badge.svg)](https://github.com/shabbychef/PDQutils/actions)
 [![codecov.io](http://codecov.io/github/shabbychef/PDQutils/coverage.svg?branch=master)](http://codecov.io/github/shabbychef/PDQutils?branch=master)
 [![CRAN](http://www.r-pkg.org/badges/version/PDQutils)](https://cran.r-project.org/package=PDQutils)
 [![Downloads](http://cranlogs.r-pkg.org/badges/PDQutils?color=green)](http://www.r-pkg.org/pkg/PDQutils)
