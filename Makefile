@@ -10,7 +10,8 @@
 VMAJOR 						 = 0
 VMINOR 						 = 1
 VPATCH  					 = 6
-VDEV 							 = .2000
+#VDEV 							 = .2000
+VDEV 							 = .3000
 PKG_NAME 					:= PDQutils
 
 undefine RPKG_USES_RCPP
